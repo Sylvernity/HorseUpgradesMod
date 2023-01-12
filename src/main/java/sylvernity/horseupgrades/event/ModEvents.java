@@ -16,37 +16,29 @@ public class ModEvents {
     public static void addHorseshoeBonusSpeed(LivingEquipmentChangeEvent event){
         if(!event.getEntity().level.isClientSide()) {
             LivingEntity entity = event.getEntity();
-            HorseUpgrades.LOGGER.info("Equipment was changed!");
             if (entity instanceof Horse) {
                 if (event.getSlot() == EquipmentSlot.CHEST) {
-                    float originalSpeed = entity.getSpeed();
-                    float newSpeed = originalSpeed;
+                    HorseUpgrades.LOGGER.info("Horse armor was changed.");
 
-                    // When previous and new item in armor slot are horseshoes, subtract the previous speed bonus and add the new speed bonus
-                    try {
-                        HorseshoeItem oldHorseshoe = (HorseshoeItem) event.getFrom().getItem();
-                        HorseshoeItem newHorseshoe = (HorseshoeItem) event.getTo().getItem();
-                        HorseUpgrades.LOGGER.info("The horseshoe is {}", oldHorseshoe);
-                        HorseUpgrades.LOGGER.info("The horseshoe is {}", newHorseshoe);
-                        HorseUpgrades.LOGGER.info("Current Horse Speed Value is: {}", originalSpeed);
-                        newSpeed = originalSpeed;
+                    float speed = entity.getSpeed();
 
+                    HorseUpgrades.LOGGER.info("Current Horse Speed Value is: {}", speed);
+
+                    // When previous item in slot was horseshoe, subtract previous speed bonus
+                    if (event.getFrom().getItem() instanceof HorseshoeItem newHorseshoe){
                         ArmorMaterials material = newHorseshoe.material;
-
-                        // Subtract previous speed bonus
-                        subtractNewSpeed(material, newSpeed, entity);
-
-                        // Add new speed bonus
-                        addNewSpeed(material, newSpeed, entity);
-                        HorseUpgrades.LOGGER.info("New Horse Speed Value is: {}", newSpeed);
-                    }
-                    catch (Exception e) {
-                        if (event.getTo().isEmpty() && event.getFrom().getItem() instanceof HorseshoeItem armor){
-                            ArmorMaterials material = newHorseshoe.material;
-                            subtractNewSpeed(material, newSpeed, entity);
-                        }
+                        subtractOldSpeed(material, speed, entity);
+                        HorseUpgrades.LOGGER.info("The horseshoe is now {}", newHorseshoe);
+                        HorseUpgrades.LOGGER.info("New Horse Speed Value is: {}", speed);
                     }
 
+                    // When new item in slot is horseshoe, add new speed bonus
+                    else if (event.getTo().getItem() instanceof HorseshoeItem newHorseshoe){
+                        ArmorMaterials material = newHorseshoe.material;
+                        addNewSpeed(material, speed, entity);
+                        HorseUpgrades.LOGGER.info("The horseshoe is now {}", newHorseshoe);
+                        HorseUpgrades.LOGGER.info("New Horse Speed Value is: {}", speed);
+                    }
                 }
             }
         }
@@ -72,7 +64,7 @@ public class ModEvents {
         entity.setSpeed(newSpeed);
     }
 
-    public static void subtractNewSpeed(ArmorMaterials material, float newSpeed, LivingEntity entity){
+    public static void subtractOldSpeed(ArmorMaterials material, float newSpeed, LivingEntity entity){
         if (material == ArmorMaterials.LEATHER) {
             newSpeed -= 0.02;
         } else if (material == ArmorMaterials.IRON) {
