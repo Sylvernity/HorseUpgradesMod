@@ -20,11 +20,12 @@ public class ModEvents {
             if (entity instanceof Horse) {
                 if (event.getSlot() == EquipmentSlot.CHEST) {
                     float originalSpeed = entity.getSpeed();
+                    float newSpeed = originalSpeed;
                     try {
                         HorseshoeItem armor = (HorseshoeItem) event.getTo().getItem();
                         HorseUpgrades.LOGGER.info("The horseshoe is {}", armor);
                         HorseUpgrades.LOGGER.info("Current Horse Speed Value is: {}", originalSpeed);
-                        float newSpeed = originalSpeed;
+                        newSpeed = originalSpeed;
                         if (armor.material == ArmorMaterials.LEATHER) {
                             newSpeed += 0.02;
                         } else if (armor.material == ArmorMaterials.IRON) {
@@ -38,13 +39,28 @@ public class ModEvents {
                         } else {
                             newSpeed = 0.3375f;
                         }
-                        entity.setSpeed(newSpeed);
+                        if (newSpeed > 0.3375f){
+                            newSpeed = 0.3375f;
+                        }
                         HorseUpgrades.LOGGER.info("New Horse Speed Value is: {}", newSpeed);
                     }
-                    catch (Exception e){
-                        HorseUpgrades.LOGGER.info("Horseshoe item was removed.");
-                        entity.setSpeed(originalSpeed);
+                    catch (Exception e) {
+                        if (event.getTo().isEmpty() && event.getFrom().getItem() instanceof HorseshoeItem armor){
+                            newSpeed = originalSpeed;
+                            if (armor.material == ArmorMaterials.LEATHER) {
+                                newSpeed -= 0.02;
+                            } else if (armor.material == ArmorMaterials.IRON) {
+                                newSpeed -= 0.08;
+                            } else if (armor.material == ArmorMaterials.GOLD) {
+                                newSpeed -= 0.08;
+                            } else if (armor.material == ArmorMaterials.DIAMOND) {
+                                newSpeed -= 0.12;
+                            } else if (armor.material == ArmorMaterials.NETHERITE) {
+                                newSpeed -= 0.18;
+                            }
+                        }
                     }
+                    entity.setSpeed(newSpeed);
                 }
             }
         }
