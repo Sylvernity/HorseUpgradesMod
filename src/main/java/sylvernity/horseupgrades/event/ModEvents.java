@@ -9,6 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import sylvernity.horseupgrades.HorseUpgrades;
 import sylvernity.horseupgrades.item.custom.HorseshoeItem;
+
 @Mod.EventBusSubscriber(modid = HorseUpgrades.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
 
@@ -33,7 +34,7 @@ public class ModEvents {
                     }
 
                     // When new item in slot is horseshoe, add new speed bonus
-                    else if (event.getTo().getItem() instanceof HorseshoeItem newHorseshoe){
+                    if (event.getTo().getItem() instanceof HorseshoeItem newHorseshoe){
                         ArmorMaterials material = newHorseshoe.material;
                         addNewSpeed(material, speed, entity);
                         HorseUpgrades.LOGGER.info("The horseshoe is now {}", newHorseshoe);
