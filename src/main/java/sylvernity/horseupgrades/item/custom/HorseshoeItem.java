@@ -1,17 +1,23 @@
 package sylvernity.horseupgrades.item.custom;
 
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.horse.Horse;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.HorseArmorItem;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import sylvernity.horseupgrades.HorseUpgrades;
 
+@Mod.EventBusSubscriber(modid = HorseUpgrades.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HorseshoeItem extends HorseArmorItem {
 
-    public HorseshoeItem(int pProtection, String pIdentifier, Properties pProperties) {
+    public ArmorMaterials material = null;
+
+    public HorseshoeItem(int pProtection, String pIdentifier, Properties pProperties, ArmorMaterials pMaterial){
         super(pProtection, pIdentifier, pProperties);
-        //AttributeModifier modifier = new AttributeModifier();
-        //Horse.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue();
-        Player.Armor
-        //Horse.getSpeed(5.5);
+        material = pMaterial;
     }
+
 }
