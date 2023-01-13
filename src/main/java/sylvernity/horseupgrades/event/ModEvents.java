@@ -1,7 +1,7 @@
 package sylvernity.horseupgrades.event;
 
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
@@ -16,36 +16,55 @@ public class ModEvents {
     @SubscribeEvent
     public static void addHorseshoeBonusSpeed(LivingEquipmentChangeEvent event){
         if(!event.getEntity().level.isClientSide()) {
-            LivingEntity entity = event.getEntity();
-            if (entity instanceof Horse) {
+            if (event.getEntity() instanceof Horse entity) {
                 if (event.getSlot() == EquipmentSlot.CHEST) {
-                    HorseUpgrades.LOGGER.info("Horse armor was changed.");
+                    HorseUpgrades.LOGGER.info("Horse armor was changed on horse {}.", entity);
 
-                    float speed = entity.getSpeed();
+                    int speed = floatToInt((float) entity.getAttributeValue(Attributes.MOVEMENT_SPEED));
 
-                    HorseUpgrades.LOGGER.info("Current Horse Speed Value is: {}", speed);
+
+                    HorseUpgrades.LOGGER.info("Old Horse Speed Value is: {}", speed);
 
                     // When previous item in slot was horseshoe, subtract previous speed bonus
-                    if (event.getFrom().getItem() instanceof HorseshoeItem newHorseshoe){
-                        ArmorMaterials material = newHorseshoe.material;
-                        subtractOldSpeed(material, speed, entity);
-                        HorseUpgrades.LOGGER.info("The horseshoe is now {}", newHorseshoe);
+                    if (event.getFrom().getItem() instanceof HorseshoeItem oldHorseshoe){
+                        ArmorMaterials material = oldHorseshoe.material;
+                        if (material == ArmorMaterials.LEATHER) {
+                            speed -= 300;
+                        } else if (material == ArmorMaterials.IRON) {
+                            speed -= 700;
+                        } else if (material == ArmorMaterials.GOLD) {
+                            speed -= 700;
+                        } else if (material == ArmorMaterials.DIAMOND) {
+                            speed -= 1000;
+                        } else if (material == ArmorMaterials.NETHERITE) {
+                            speed -= 1200;
+                        }
                         HorseUpgrades.LOGGER.info("New Horse Speed Value is: {}", speed);
                     }
 
                     // When new item in slot is horseshoe, add new speed bonus
                     if (event.getTo().getItem() instanceof HorseshoeItem newHorseshoe){
                         ArmorMaterials material = newHorseshoe.material;
-                        addNewSpeed(material, speed, entity);
-                        HorseUpgrades.LOGGER.info("The horseshoe is now {}", newHorseshoe);
+                        if (material == ArmorMaterials.LEATHER) {
+                            speed += 300;
+                        } else if (material == ArmorMaterials.IRON) {
+                            speed += 700;
+                        } else if (material == ArmorMaterials.GOLD) {
+                            speed += 700;
+                        } else if (material == ArmorMaterials.DIAMOND) {
+                            speed += 1000;
+                        } else if (material == ArmorMaterials.NETHERITE) {
+                            speed += 1200;
+                        }
                         HorseUpgrades.LOGGER.info("New Horse Speed Value is: {}", speed);
                     }
+                    entity.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(intToFloat(speed));
                 }
             }
         }
     }
 
-    public static void addNewSpeed(ArmorMaterials material, float newSpeed, LivingEntity entity){
+    /* public static double addNewSpeed(ArmorMaterials material, double newSpeed, LivingEntity entity){
         if (material == ArmorMaterials.LEATHER) {
             newSpeed += 0.02;
         } else if (material == ArmorMaterials.IRON) {
@@ -57,15 +76,16 @@ public class ModEvents {
         } else if (material == ArmorMaterials.NETHERITE) {
             newSpeed += 0.18;
         } else {
-            newSpeed = 0.3375f;
+            newSpeed = 0.3375;
         }
-        if (newSpeed > 0.3375f){
-            newSpeed = 0.3375f;
+        if (newSpeed > 0.3375){
+            newSpeed = 0.3375;
         }
-        entity.setSpeed(newSpeed);
+        entity.setSpeed((float) newSpeed);
+        return newSpeed;
     }
 
-    public static void subtractOldSpeed(ArmorMaterials material, float newSpeed, LivingEntity entity){
+    public static double subtractOldSpeed(ArmorMaterials material, double newSpeed, LivingEntity entity){
         if (material == ArmorMaterials.LEATHER) {
             newSpeed -= 0.02;
         } else if (material == ArmorMaterials.IRON) {
@@ -77,6 +97,16 @@ public class ModEvents {
         } else if (material == ArmorMaterials.NETHERITE) {
             newSpeed -= 0.18;
         }
-        entity.setSpeed(newSpeed);
+        entity.setSpeed((float) newSpeed);
+        return newSpeed;
+    }
+    */
+
+    public static int floatToInt(float floatNumber){
+        return (int) (floatNumber * 10000);
+    }
+
+    public static float intToFloat(int intNumber){
+        return (float) (intNumber / 10000.0);
     }
 }
