@@ -12,7 +12,6 @@ import sylvernity.horseupgrades.item.custom.HorseshoeItem;
 
 @Mod.EventBusSubscriber(modid = HorseUpgrades.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
-
     @SubscribeEvent
     public static void addHorseshoeBonusSpeed(LivingEquipmentChangeEvent event){
         if(!event.getEntity().level.isClientSide()) {
