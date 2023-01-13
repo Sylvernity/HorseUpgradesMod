@@ -23,7 +23,7 @@ public class ModEvents {
                     int speed = floatToInt((float) entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
                     int bonus;
 
-                    HorseUpgrades.LOGGER.info("Old Horse Speed Value is: {}", speed);
+                    HorseUpgrades.LOGGER.info("Base Horse Speed Value is: {}", speed);
 
                     // When new item in slot is horseshoe, add new speed bonus
                     if (event.getTo().getItem() instanceof HorseshoeItem newHorseshoe){
@@ -47,7 +47,7 @@ public class ModEvents {
                             bonus = 0;
                         }
                         Objects.requireNonNull(entity.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(new AttributeModifier("Horseshoe Speed Bonus", intToFloat(bonus), AttributeModifier.Operation.ADDITION));
-                        HorseUpgrades.LOGGER.info("New Horse Speed Value is: {}", speed + bonus);
+                        HorseUpgrades.LOGGER.info("Bonus Horse Speed Value is: {}", speed + bonus);
                     }
                 }
 
