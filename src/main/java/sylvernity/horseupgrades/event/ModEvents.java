@@ -15,6 +15,8 @@ import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = HorseUpgrades.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
+
+    public static AttributeModifier attributeModifier;
     @SubscribeEvent
     public static void addHorseshoeBonusSpeed(LivingEquipmentChangeEvent event){
         if(!event.getEntity().level.isClientSide()) {
@@ -24,7 +26,10 @@ public class ModEvents {
                     int bonus;
 
                     HorseUpgrades.LOGGER.info("Base Horse Speed Value is: {}", speed);
-
+                    // When old item in slot is horseshoe, remove old speed bonus
+                    if (event.getFrom().getItem() instanceof HorseshoeItem){
+                        Objects.requireNonNull(entity.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(attributeModifier);
+                    }
                     // When new item in slot is horseshoe, add new speed bonus
                     if (event.getTo().getItem() instanceof HorseshoeItem newHorseshoe){
                         ArmorMaterials material = newHorseshoe.material;
@@ -46,9 +51,11 @@ public class ModEvents {
                             speed = 3375;
                             bonus = 0;
                         }
-                        Objects.requireNonNull(entity.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(new AttributeModifier("Horseshoe Speed Bonus", intToFloat(bonus), AttributeModifier.Operation.ADDITION));
+                        attributeModifier = new AttributeModifier("Horseshoe Speed Bonus", intToFloat(bonus), AttributeModifier.Operation.ADDITION);
+                        Objects.requireNonNull(entity.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(attributeModifier);
                         HorseUpgrades.LOGGER.info("Bonus Horse Speed Value is: {}", speed + bonus);
                     }
+
                 }
 
             }
