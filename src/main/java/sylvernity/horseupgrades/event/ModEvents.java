@@ -18,10 +18,10 @@ public class ModEvents {
         if(!event.getEntity().level.isClientSide()) {
             if (event.getEntity() instanceof Horse entity) {
                 if (event.getSlot() == EquipmentSlot.CHEST) {
-                    HorseUpgrades.LOGGER.info("Horse armor was changed on horse {}.", entity);
+
+                    HorseUpgrades.LOGGER.info("Old Horse Speed Value is: {}", entity.getAttributeValue(Attributes.MOVEMENT_SPEED));
 
                     int speed = floatToInt((float) entity.getAttributeValue(Attributes.MOVEMENT_SPEED));
-
 
                     HorseUpgrades.LOGGER.info("Old Horse Speed Value is: {}", speed);
 
@@ -63,44 +63,6 @@ public class ModEvents {
             }
         }
     }
-
-    /* public static double addNewSpeed(ArmorMaterials material, double newSpeed, LivingEntity entity){
-        if (material == ArmorMaterials.LEATHER) {
-            newSpeed += 0.02;
-        } else if (material == ArmorMaterials.IRON) {
-            newSpeed += 0.08;
-        } else if (material == ArmorMaterials.GOLD) {
-            newSpeed += 0.08;
-        } else if (material == ArmorMaterials.DIAMOND) {
-            newSpeed += 0.12;
-        } else if (material == ArmorMaterials.NETHERITE) {
-            newSpeed += 0.18;
-        } else {
-            newSpeed = 0.3375;
-        }
-        if (newSpeed > 0.3375){
-            newSpeed = 0.3375;
-        }
-        entity.setSpeed((float) newSpeed);
-        return newSpeed;
-    }
-
-    public static double subtractOldSpeed(ArmorMaterials material, double newSpeed, LivingEntity entity){
-        if (material == ArmorMaterials.LEATHER) {
-            newSpeed -= 0.02;
-        } else if (material == ArmorMaterials.IRON) {
-            newSpeed -= 0.08;
-        } else if (material == ArmorMaterials.GOLD) {
-            newSpeed -= 0.08;
-        } else if (material == ArmorMaterials.DIAMOND) {
-            newSpeed -= 0.12;
-        } else if (material == ArmorMaterials.NETHERITE) {
-            newSpeed -= 0.18;
-        }
-        entity.setSpeed((float) newSpeed);
-        return newSpeed;
-    }
-    */
 
     public static int floatToInt(float floatNumber){
         return (int) (floatNumber * 10000);
