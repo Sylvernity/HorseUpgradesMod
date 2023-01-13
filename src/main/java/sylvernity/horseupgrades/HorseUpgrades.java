@@ -2,15 +2,8 @@ package sylvernity.horseupgrades;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.HorseArmorItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -22,7 +15,6 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 import sylvernity.horseupgrades.item.ModItems;
 
@@ -36,13 +28,6 @@ public class HorseUpgrades
     public static final Logger LOGGER = LogUtils.getLogger();
     // Create a Deferred Register to hold Blocks which will all be registered under the "horseupgrades" namespace
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
-    // Create a Deferred Register to hold Items which will all be registered under the "horseupgrades" namespace
-
-    /* // Creates a new Block with the id "horseupgrades:example_block", combining the namespace and path
-    public static final RegistryObject<Block> WOODEN_HORSESHOE = BLOCKS.register("wooden_horseshoe", () -> new Block(BlockBehaviour.Properties.of(Material.STONE)));
-    // Creates a new BlockItem with the id "horseupgrades:example_block", combining the namespace and path
-    public static final RegistryObject<Item> WOODEN_HORSESHOE_ITEM = ITEMS.register("wooden_horseshoe", () -> new BlockItem(WOODEN_HORSESHOE.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
-     */
 
     public HorseUpgrades()
     {
