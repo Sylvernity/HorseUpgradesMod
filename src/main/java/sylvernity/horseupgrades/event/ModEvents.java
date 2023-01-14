@@ -23,7 +23,7 @@ public class ModEvents {
             if (event.getEntity() instanceof Horse entity) {
                 if (event.getSlot() == EquipmentSlot.CHEST) {
                     int speed = floatToInt((float) entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-                    int bonus;
+                    int bonus = 0;
 
                     HorseUpgrades.LOGGER.info("Base Horse Speed Value is: {}", speed);
                     // When old item in slot is horseshoe, remove old speed bonus
@@ -33,9 +33,7 @@ public class ModEvents {
                     // When new item in slot is horseshoe, add new speed bonus
                     if (event.getTo().getItem() instanceof HorseshoeItem newHorseshoe){
                         ArmorMaterials material = newHorseshoe.material;
-                        if (material == ArmorMaterials.LEATHER) {
-                            bonus = 300;
-                        } else if (material == ArmorMaterials.IRON) {
+                        if (material == ArmorMaterials.IRON) {
                             bonus = 700;
                         } else if (material == ArmorMaterials.GOLD) {
                             bonus = 700;
@@ -43,9 +41,6 @@ public class ModEvents {
                             bonus = 1000;
                         } else if (material == ArmorMaterials.NETHERITE) {
                             bonus = 1200;
-                        }
-                        else {
-                            bonus = 0;
                         }
                         if (speed + bonus > 3375) {
                             speed = 3375;
