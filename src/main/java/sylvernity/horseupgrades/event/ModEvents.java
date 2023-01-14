@@ -10,7 +10,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import sylvernity.horseupgrades.HorseUpgrades;
 import sylvernity.horseupgrades.item.custom.HorseshoeItem;
-
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = HorseUpgrades.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -33,9 +32,7 @@ public class ModEvents {
                     // When new item in slot is horseshoe, add new speed bonus
                     if (event.getTo().getItem() instanceof HorseshoeItem newHorseshoe){
                         ArmorMaterials material = newHorseshoe.material;
-                        if (material == ArmorMaterials.IRON) {
-                            bonus = 700;
-                        } else if (material == ArmorMaterials.GOLD) {
+                        if (material == ArmorMaterials.IRON || material == ArmorMaterials.GOLD) {
                             bonus = 700;
                         } else if (material == ArmorMaterials.DIAMOND) {
                             bonus = 1000;
@@ -43,8 +40,7 @@ public class ModEvents {
                             bonus = 1200;
                         }
                         if (speed + bonus > 3375) {
-                            speed = 3375;
-                            bonus = 0;
+                            bonus = 3375 - speed;
                         }
                         attributeModifier = new AttributeModifier("Horseshoe Speed Bonus", intToFloat(bonus), AttributeModifier.Operation.ADDITION);
                         Objects.requireNonNull(entity.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(attributeModifier);
