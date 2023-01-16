@@ -7,5 +7,9 @@
   "item.horseupgrades.iron_horseshoe": "Iron Horseshoe",
   "item.horseupgrades.golden_horseshoe": "Golden Horseshoe",
   "item.horseupgrades.diamond_horseshoe": "Diamond Horseshoe",
-  "item.horseupgrades.netherite_horseshoe": "Netherite Horseshoe"
+  "item.horseupgrades.netherite_horseshoe": "Netherite Horseshoe",
+
+  "block.horseupgrades.horseshoe_anvil": "Horseshoe Anvil",
+
+  "itemGroup.horseupgradestab": "Horse Upgrades Tab"
 }

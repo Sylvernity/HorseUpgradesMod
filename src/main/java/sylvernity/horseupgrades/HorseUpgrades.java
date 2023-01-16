@@ -16,6 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
+import sylvernity.horseupgrades.block.ModBlocks;
 import sylvernity.horseupgrades.item.ModItems;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -37,7 +38,7 @@ public class HorseUpgrades
         modEventBus.addListener(this::commonSetup);
 
         // Register the Deferred Register to the mod event bus so blocks get registered
-        BLOCKS.register(modEventBus);
+        ModBlocks.register(modEventBus);
         // Register the Deferred Register to the mod event bus so items get registered
         ModItems.register(modEventBus);
 
