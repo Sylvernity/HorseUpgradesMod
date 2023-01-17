@@ -1,7 +1,25 @@
 {
   "variants": {
-    "": {
-      "model": "horseupgrades:block/horseshoe_anvil"
+    "bar_hammered=false,has_bar=false,material=none": {
+      "model": "horseupgrades:block/horseshoe_anvil_empty"
+    },
+    "bar_hammered=false,has_bar=true,material=iron": {
+      "model": "horseupgrades:block/horseshoe_anvil_iron_bar"
+    },
+    "bar_hammered=false,has_bar=true,material=gold": {
+      "model": "horseupgrades:block/horseshoe_anvil_golden_bar"
+    },
+    "bar_hammered=false,has_bar=true,material=diamond": {
+      "model": "horseupgrades:block/horseshoe_anvil_diamond_bar"
+    },
+    "bar_hammered=true,has_bar=true,material=iron": {
+      "model": "horseupgrades:block/horseshoe_anvil_iron_horseshoe"
+    },
+    "bar_hammered=true,has_bar=true,material=gold": {
+      "model": "horseupgrades:block/horseshoe_anvil_golden_horseshoe"
+    },
+    "bar_hammered=true,has_bar=true,material=diamond": {
+      "model": "horseupgrades:block/horseshoe_anvil_diamond_horseshoe"
     }
   }
 }
