@@ -10,9 +10,10 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -22,7 +23,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class HorseshoeAnvilBlockEntity extends BlockEntity implements MenuProvider {
+public class HorseshoeAnvilBlockEntity extends BlockEntity implements MenuProvider{
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(1){
         @Override
@@ -34,8 +35,35 @@ public class HorseshoeAnvilBlockEntity extends BlockEntity implements MenuProvid
     ItemStack bar = ItemStack.EMPTY;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    public HorseshoeAnvilBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
+    protected final ContainerData data;
+    private int progress = 0;
+    private int maxProgress = 78;
+
+    public HorseshoeAnvilBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(ModBlockEntities.HORSESHOE_ANVIL.get(), pPos, pBlockState);
+        this.data = new ContainerData() {
+            @Override
+            public int get(int pIndex) {
+                return switch (pIndex) {
+                    case 0 -> HorseshoeAnvilBlockEntity.this.progress;
+                    case 1 -> HorseshoeAnvilBlockEntity.this.maxProgress;
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int pIndex, int pValue) {
+                switch (pIndex) {
+                    case 0 -> HorseshoeAnvilBlockEntity.this.progress = pValue;
+                    case 1 -> HorseshoeAnvilBlockEntity.this.maxProgress = pValue;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 0;
+            }
+        };
     }
 
     @Override
@@ -88,6 +116,7 @@ public class HorseshoeAnvilBlockEntity extends BlockEntity implements MenuProvid
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
+
     public void setBar(ItemStack pStack) {
         this.setBar(pStack, (Player)null);
     }
@@ -95,5 +124,13 @@ public class HorseshoeAnvilBlockEntity extends BlockEntity implements MenuProvid
     public void setBar(ItemStack pStack, @Nullable Player pPlayer) {
         //this.bar = this.resolveBar(pStack, pPlayer);
         this.setChanged();
+    }
+
+    public static <E extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState blockState, HorseshoeAnvilBlockEntity pEntity) {
+        if(level.isClientSide()){
+            return;
+        }
+
+
     }
 }
