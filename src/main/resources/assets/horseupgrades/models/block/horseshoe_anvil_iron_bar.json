@@ -3,7 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "horseupgrades:block/horseshoe_anvil_iron_bar"
+		"1": "horseupgrades:block/horseshoe_anvil_iron_bar",
+		"particle": "horseupgrades:block/horseshoe_anvil_iron_bar"
 	},
 	"elements": [
 		{
