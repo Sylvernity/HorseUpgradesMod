@@ -3,7 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "horseupgrades:block/horseshoe_anvil_diamond_horseshoe"
+		"1": "horseupgrades:block/horseshoe_anvil_diamond_horseshoe",
+		"particle": "horseupgrades:block/horseshoe_anvil_diamond_horseshoe"
 	},
 	"elements": [
 		{

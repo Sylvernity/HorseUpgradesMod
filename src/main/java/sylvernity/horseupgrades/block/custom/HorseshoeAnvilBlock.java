@@ -12,8 +12,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -30,10 +28,8 @@ import org.jetbrains.annotations.Nullable;
 import sylvernity.horseupgrades.HorseUpgrades;
 import sylvernity.horseupgrades.block.ModBlocks;
 import sylvernity.horseupgrades.block.entity.HorseshoeAnvilBlockEntity;
-import sylvernity.horseupgrades.block.entity.ModBlockEntities;
 import sylvernity.horseupgrades.blockstate.Material;
 import sylvernity.horseupgrades.item.ModItems;
-import sylvernity.horseupgrades.item.custom.HorseshoeBarItem;
 
 public class HorseshoeAnvilBlock extends BaseEntityBlock{
 
@@ -62,13 +58,9 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
 
     public HorseshoeAnvilBlock(BlockBehaviour.Properties pProperties) {
         super(pProperties);
-        HorseUpgrades.LOGGER.info("Hello. Here: {}", this.defaultBlockState());
-        HorseUpgrades.LOGGER.info("Second one: {}", ModBlocks.HORSESHOE_ANVIL.getKey());
         if(!ModBlocks.HORSESHOE_ANVIL.getKey().equals(ForgeRegistries.BLOCKS.getKey(this))){
             this.registerDefaultState(this.stateDefinition.any().setValue(HAS_BAR, Boolean.FALSE).setValue(BAR_HAMMERED, false).setValue(MATERIAL, Material.NONE));
         }
-        HorseUpgrades.LOGGER.info("Hello. Here: {}", this.defaultBlockState());
-
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -116,44 +108,51 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
 
             horseshoeAnvilBlockEntity.setBar(pBar.split(1));
 
-            pLevel.setBlock(pPos, pState.setValue(HAS_BAR, true), 3);
             if (pItem.equals(ModItems.IRON_HORSESHOE_BAR.get())) {
-                pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.IRON), 3);
-
-                HorseUpgrades.LOGGER.info("Just changed to iron!");
-                HorseUpgrades.LOGGER.info("The material of the anvil is now: {}", pLevel.getBlockState(pPos));
+                pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.IRON).setValue(HAS_BAR, true), 3);
             }
             else if(pItem.equals(ModItems.GOLDEN_HORSESHOE_BAR.get())) {
-                pState.setValue(MATERIAL, Material.GOLD);
+                pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.GOLD).setValue(HAS_BAR, true), 3);
             }
             else if (pItem.equals(ModItems.DIAMOND_HORSESHOE_BAR.get())) {
-                pState.setValue(MATERIAL,Material.DIAMOND);
+                pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.DIAMOND).setValue(HAS_BAR, true), 3);
             }
 
-            HorseUpgrades.LOGGER.info("The material of the anvil is now: {}", pState.getValue(MATERIAL));
             pLevel.playSound((Player)null, pPos, SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
             pLevel.gameEvent(pPlayer, GameEvent.BLOCK_CHANGE, pPos);
         }
 
     }
 
+    // Returns item if player clicks filled anvil
     @Override
     public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if(!pLevel.isClientSide()){
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(pState.getValue(HAS_BAR)){
-                // ItemStack itemStack =
-                if(pState.getValue(BAR_HAMMERED)){
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if(pState.getValue(HAS_BAR) && !pState.getValue(BAR_HAMMERED)){
+                if(pState.getValue(MATERIAL) == Material.IRON){
+                    pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.IRON_HORSESHOE_BAR.get()));
+                }
+                else if(pState.getValue(MATERIAL) == Material.GOLD){
+                    pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.GOLDEN_HORSESHOE_BAR.get()));
+                }
+                else if(pState.getValue(MATERIAL) == Material.DIAMOND){
+                    pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.DIAMOND_HORSESHOE_BAR.get()));
+                }
+                pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.NONE).setValue(HAS_BAR, false), 3);
+            }
+            else if(pState.getValue(HAS_BAR) && pState.getValue(BAR_HAMMERED)){
+                if(pState.getValue(MATERIAL) == Material.IRON){
+                    pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.IRON_HORSESHOE.get()));
+                }
+                else if(pState.getValue(MATERIAL) == Material.GOLD){
+                    pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.GOLDEN_HORSESHOE.get()));
+                }
+                else if(pState.getValue(MATERIAL) == Material.DIAMOND){
+                    pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.DIAMOND_HORSESHOE.get()));
+                }
+            }
 
-                }
-            }
-            if(entity instanceof HorseshoeAnvilBlockEntity){
-                // Insert code here for interaction with block
-                ItemStack itemStack = pPlayer.getItemInHand(pHand);
-                if(itemStack.getItem() instanceof HorseshoeBarItem){
-                    this.stateDefinition.any().setValue(HAS_BAR, true);
-                }
-            }
         }
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
@@ -164,9 +163,11 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
         return new HorseshoeAnvilBlockEntity(pPos, pState);
     }
 
+    /*
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return createTickerHelper(pBlockEntityType, ModBlockEntities.HORSESHOE_ANVIL.get(), HorseshoeAnvilBlockEntity::tick);
     }
+     */
 }
