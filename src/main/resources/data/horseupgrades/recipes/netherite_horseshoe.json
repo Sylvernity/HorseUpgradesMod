@@ -4,9 +4,9 @@
     "item": "minecraft:netherite_ingot"
   },
   "base": {
-    "item": "horseupgrades:diamond_horseshoe_bar"
+    "item": "horseupgrades:diamond_horseshoe"
   },
   "result": {
-    "item": "horseupgrades:netherite_horseshoe_bar"
+    "item": "horseupgrades:netherite_horseshoe"
   }
 }
