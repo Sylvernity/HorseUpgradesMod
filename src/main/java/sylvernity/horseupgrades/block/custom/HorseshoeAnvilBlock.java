@@ -90,7 +90,6 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
 
     public static boolean tryPlaceBar(@Nullable Player pPlayer, Level pLevel, BlockPos pPos, BlockState pState, ItemStack pBar) {
         if (!pLevel.isClientSide) {
-            HorseUpgrades.LOGGER.info("{}", pState.getValue(HAS_BAR));
             if (!pState.getValue(HAS_BAR)) {
                 placeBar(pPlayer, pLevel, pPos, pState, pBar);
             }
@@ -106,7 +105,7 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
         if (blockEntity instanceof HorseshoeAnvilBlockEntity horseshoeAnvilBlockEntity) {
             Item pItem = pBar.getItem();
 
-            horseshoeAnvilBlockEntity.setBar(pBar.split(1));
+            pBar.split(1);
 
             if (pItem.equals(ModItems.IRON_HORSESHOE_BAR.get())) {
                 pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.IRON).setValue(HAS_BAR, true), 3);
