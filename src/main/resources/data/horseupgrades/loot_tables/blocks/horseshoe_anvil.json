@@ -3,16 +3,177 @@
   "pools": [
     {
       "rolls": 1,
-      "bonus_rolls": 0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "horseupgrades:horseshoe_anvil"
         }
-      ],
-      "conditions": [
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
         {
-          "condition": "minecraft:survives_explosion"
+        "type": "minecraft:item",
+        "name": "horseupgrades:iron_horseshoe_bar",
+        "conditions": [
+          {
+            "condition": "minecraft:block_state_property",
+            "block": "horseupgrades:horseshoe_anvil",
+            "properties": {
+              "has_bar": "true"
+            }
+          },
+          {
+            "condition": "minecraft:block_state_property",
+            "block": "horseupgrades:horseshoe_anvil",
+            "properties": {
+              "bar_hammered": "false"
+            }
+          },
+          {
+            "condition": "minecraft:block_state_property",
+            "block": "horseupgrades:horseshoe_anvil",
+            "properties": {
+              "material": "iron"
+            }
+          }
+        ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "horseupgrades:golden_horseshoe_bar",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "has_bar": "true"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "bar_hammered": "false"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "material": "gold"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "horseupgrades:diamond_horseshoe_bar",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "has_bar": "true"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "bar_hammered": "false"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "material": "diamond"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "horseupgrades:iron_horseshoe",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "has_bar": "true"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "bar_hammered": "true"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "material": "iron"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "horseupgrades:golden_horseshoe",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "has_bar": "true"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "bar_hammered": "true"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "material": "gold"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "horseupgrades:diamond_horseshoe",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "has_bar": "true"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "bar_hammered": "true"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "horseupgrades:horseshoe_anvil",
+              "properties": {
+                "material": "diamond"
+              }
+            }
+          ]
         }
       ]
     }
