@@ -25,7 +25,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import sylvernity.horseupgrades.HorseUpgrades;
 import sylvernity.horseupgrades.block.ModBlocks;
 import sylvernity.horseupgrades.block.entity.HorseshoeAnvilBlockEntity;
 import sylvernity.horseupgrades.blockstate.Material;
