@@ -1,4 +1,4 @@
-package sylvernity.horseupgrades.data.tags;
+package sylvernity.horseupgrades.datagen.tags;
 
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
