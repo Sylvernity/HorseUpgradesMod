@@ -21,14 +21,7 @@
             "condition": "minecraft:block_state_property",
             "block": "horseupgrades:horseshoe_anvil",
             "properties": {
-              "has_bar": "true"
-            }
-          },
-          {
-            "condition": "minecraft:block_state_property",
-            "block": "horseupgrades:horseshoe_anvil",
-            "properties": {
-              "bar_hammered": "false"
+              "holding": "bar"
             }
           },
           {
@@ -48,14 +41,7 @@
               "condition": "minecraft:block_state_property",
               "block": "horseupgrades:horseshoe_anvil",
               "properties": {
-                "has_bar": "true"
-              }
-            },
-            {
-              "condition": "minecraft:block_state_property",
-              "block": "horseupgrades:horseshoe_anvil",
-              "properties": {
-                "bar_hammered": "false"
+                "holding": "bar"
               }
             },
             {
@@ -75,14 +61,7 @@
               "condition": "minecraft:block_state_property",
               "block": "horseupgrades:horseshoe_anvil",
               "properties": {
-                "has_bar": "true"
-              }
-            },
-            {
-              "condition": "minecraft:block_state_property",
-              "block": "horseupgrades:horseshoe_anvil",
-              "properties": {
-                "bar_hammered": "false"
+                "holding": "bar"
               }
             },
             {
@@ -102,14 +81,7 @@
               "condition": "minecraft:block_state_property",
               "block": "horseupgrades:horseshoe_anvil",
               "properties": {
-                "has_bar": "true"
-              }
-            },
-            {
-              "condition": "minecraft:block_state_property",
-              "block": "horseupgrades:horseshoe_anvil",
-              "properties": {
-                "bar_hammered": "true"
+                "holding": "horseshoe"
               }
             },
             {
@@ -129,14 +101,7 @@
               "condition": "minecraft:block_state_property",
               "block": "horseupgrades:horseshoe_anvil",
               "properties": {
-                "has_bar": "true"
-              }
-            },
-            {
-              "condition": "minecraft:block_state_property",
-              "block": "horseupgrades:horseshoe_anvil",
-              "properties": {
-                "bar_hammered": "true"
+                "holding": "horseshoe"
               }
             },
             {
@@ -156,14 +121,7 @@
               "condition": "minecraft:block_state_property",
               "block": "horseupgrades:horseshoe_anvil",
               "properties": {
-                "has_bar": "true"
-              }
-            },
-            {
-              "condition": "minecraft:block_state_property",
-              "block": "horseupgrades:horseshoe_anvil",
-              "properties": {
-                "bar_hammered": "true"
+                "holding": "horseshoe"
               }
             },
             {
