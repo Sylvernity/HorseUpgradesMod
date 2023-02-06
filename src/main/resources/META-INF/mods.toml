@@ -33,7 +33,7 @@ displayName="Horse Upgrades" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="iron_horseshoe.png" #optional
 # A text field displayed in the mod UI
-credits="" #optional
+credits="Models by lynien" #optional
 # A text field displayed in the mod UI
 authors="Sylvernity" #optional
 # Display Test controls the display for your mod in the server connection screen
@@ -46,7 +46,7 @@ displayTest="MATCH_VERSION" # MATCH_VERSION is the default if nothing is specifi
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-This mod addes items to improve horses in slight ways.
+This mod adds items to upgrade horses.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 #[[dependencies.examplemod]] #optional
