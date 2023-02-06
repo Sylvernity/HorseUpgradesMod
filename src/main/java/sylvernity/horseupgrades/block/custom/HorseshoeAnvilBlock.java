@@ -120,24 +120,24 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
             ItemStack itemStack = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
 
             if (itemStack.isEmpty() || itemStack.getItem() instanceof HorseshoeBarItem) {
-                // If player has no item in hand or is holding a Horseshoe Bar, retrieve item from anvil
+                // If player has no item in hand or is holding a Horseshoe Bar, retrieve bar from anvil
                 if (pState.getValue(HOLDING) == Holding.BAR) {
                     if (pState.getValue(MATERIAL) == Material.IRON) {
-                        pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.IRON_HORSESHOE_BAR.get()));
+                        pPlayer.addItem(new ItemStack(ModItems.IRON_HORSESHOE_BAR.get()));
                     } else if (pState.getValue(MATERIAL) == Material.GOLD) {
-                        pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.GOLDEN_HORSESHOE_BAR.get()));
+                        pPlayer.addItem(new ItemStack(ModItems.GOLDEN_HORSESHOE_BAR.get()));
                     } else if (pState.getValue(MATERIAL) == Material.DIAMOND) {
-                        pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.DIAMOND_HORSESHOE_BAR.get()));
+                        pPlayer.addItem(new ItemStack(ModItems.DIAMOND_HORSESHOE_BAR.get()));
                     }
                 }
-                // If player has no item in hand or is holding a Horseshoe Bar, retrieve item from anvil
+                // If player has no item in hand or is holding a Horseshoe Bar, retrieve horseshoe from anvil
                 else if (pState.getValue(HOLDING) == Holding.HORSESHOE) {
                     if (pState.getValue(MATERIAL) == Material.IRON) {
-                        pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.IRON_HORSESHOE.get()));
+                        pPlayer.addItem(new ItemStack(ModItems.IRON_HORSESHOE.get()));
                     } else if (pState.getValue(MATERIAL) == Material.GOLD) {
-                        pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.GOLDEN_HORSESHOE.get()));
+                        pPlayer.addItem(new ItemStack(ModItems.GOLDEN_HORSESHOE.get()));
                     } else if (pState.getValue(MATERIAL) == Material.DIAMOND) {
-                        pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.DIAMOND_HORSESHOE.get()));
+                        pPlayer.addItem(new ItemStack(ModItems.DIAMOND_HORSESHOE.get()));
                     }
                 }
                 pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.NONE).setValue(HOLDING, Holding.NONE), 3);
