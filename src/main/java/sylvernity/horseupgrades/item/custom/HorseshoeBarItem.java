@@ -23,6 +23,7 @@ public class HorseshoeBarItem extends Item {
         super(pProperties);
     }
 
+    // Try to place Horseshoe Bar on anvil when used on one. Calls HorseshoeAnvilBlock#tryPlaceBar method.
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
         Level level = pContext.getLevel();

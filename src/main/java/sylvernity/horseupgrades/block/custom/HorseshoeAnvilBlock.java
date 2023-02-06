@@ -75,6 +75,7 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
         return RenderShape.MODEL;
     }
 
+    // Called by useOn method in HorseshoeBarItem. Calls placeBar method if anvil has no item
     public static boolean tryPlaceBar(@Nullable Player pPlayer, Level pLevel, BlockPos pPos, BlockState pState, ItemStack pBar) {
         if (!pLevel.isClientSide) {
             if (pState.getValue(HOLDING) == Holding.NONE) {
@@ -86,6 +87,7 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
         }
     }
 
+    // Place Horseshoe Bar in anvil when called by tryPlaceBar()
     private static void placeBar(@Nullable Player pPlayer, Level pLevel, BlockPos pPos, BlockState pState, ItemStack pBar) {
         BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
 
@@ -116,7 +118,9 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
         if(!pLevel.isClientSide()){
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             ItemStack itemStack = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
+
             if (itemStack.isEmpty() || itemStack.getItem() instanceof HorseshoeBarItem) {
+                // If player has no item in hand or is holding a Horseshoe Bar, retrieve item from anvil
                 if (pState.getValue(HOLDING) == Holding.BAR) {
                     if (pState.getValue(MATERIAL) == Material.IRON) {
                         pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.IRON_HORSESHOE_BAR.get()));
@@ -125,7 +129,9 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
                     } else if (pState.getValue(MATERIAL) == Material.DIAMOND) {
                         pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.DIAMOND_HORSESHOE_BAR.get()));
                     }
-                } else if (pState.getValue(HOLDING) == Holding.HORSESHOE) {
+                }
+                // If player has no item in hand or is holding a Horseshoe Bar, retrieve item from anvil
+                else if (pState.getValue(HOLDING) == Holding.HORSESHOE) {
                     if (pState.getValue(MATERIAL) == Material.IRON) {
                         pPlayer.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModItems.IRON_HORSESHOE.get()));
                     } else if (pState.getValue(MATERIAL) == Material.GOLD) {
