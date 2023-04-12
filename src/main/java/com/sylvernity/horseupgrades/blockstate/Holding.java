@@ -1,16 +1,15 @@
-package sylvernity.horseupgrades.blockstate;
+package com.sylvernity.horseupgrades.blockstate;
 
 import net.minecraft.util.StringRepresentable;
 
-public enum Material implements StringRepresentable {
-    IRON("iron"),
-    GOLD("gold"),
-    DIAMOND("diamond"),
+public enum Holding implements StringRepresentable{
+    BAR("bar"),
+    HORSESHOE("horseshoe"),
     NONE("none");
 
     private final String name;
 
-    Material(String pName) {
+    Holding(String pName) {
         this.name = pName;
     }
 

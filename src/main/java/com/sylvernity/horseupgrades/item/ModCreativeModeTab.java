@@ -1,4 +1,4 @@
-package sylvernity.horseupgrades.item;
+package com.sylvernity.horseupgrades.item;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;

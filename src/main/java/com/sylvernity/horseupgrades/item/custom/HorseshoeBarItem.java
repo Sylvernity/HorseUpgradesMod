@@ -1,5 +1,6 @@
-package sylvernity.horseupgrades.item.custom;
+package com.sylvernity.horseupgrades.item.custom;
 
+import com.sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -11,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock;
 
 public class HorseshoeBarItem extends Item {
 

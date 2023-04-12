@@ -1,5 +1,6 @@
-package sylvernity.horseupgrades.block;
+package com.sylvernity.horseupgrades.block;
 
+import com.sylvernity.horseupgrades.HorseUpgrades;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -10,10 +11,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import sylvernity.horseupgrades.HorseUpgrades;
-import sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock;
-import sylvernity.horseupgrades.item.ModCreativeModeTab;
-import sylvernity.horseupgrades.item.ModItems;
+import com.sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock;
+import com.sylvernity.horseupgrades.item.ModCreativeModeTab;
+import com.sylvernity.horseupgrades.item.ModItems;
 
 import java.util.function.Supplier;
 

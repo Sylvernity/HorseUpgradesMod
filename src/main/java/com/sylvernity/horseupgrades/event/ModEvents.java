@@ -1,10 +1,20 @@
-package sylvernity.horseupgrades.event;
+package com.sylvernity.horseupgrades.event;
 
+import com.google.common.eventbus.Subscribe;
+import com.sylvernity.horseupgrades.HorseUpgrades;
+import com.sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock;
+import com.sylvernity.horseupgrades.block.entity.HorseshoeAnvilBlockEntity;
+import com.sylvernity.horseupgrades.blockstate.Holding;
+import com.sylvernity.horseupgrades.item.custom.HammerItem;
+import com.sylvernity.horseupgrades.item.custom.HorseshoeItem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -13,13 +23,9 @@ import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import sylvernity.horseupgrades.HorseUpgrades;
-import sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock;
-import sylvernity.horseupgrades.block.entity.HorseshoeAnvilBlockEntity;
-import sylvernity.horseupgrades.blockstate.Holding;
-import sylvernity.horseupgrades.blockstate.Material;
-import sylvernity.horseupgrades.item.custom.HammerItem;
-import sylvernity.horseupgrades.item.custom.HorseshoeItem;
+import com.sylvernity.horseupgrades.blockstate.Material;
+
+import javax.swing.event.MenuEvent;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = HorseUpgrades.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -85,6 +91,9 @@ public class ModEvents {
 
                         // Get position of anvil hit
                         blockPos = event.getPos();
+
+                        // Play Anvil working sound
+                        event.getLevel().playSound((Player)null, event.getPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
                     }
                 }
             }
@@ -101,6 +110,11 @@ public class ModEvents {
             if (clickedInitial && tickCounter < 250){
                 tickCounter ++;
                 HorseUpgrades.LOGGER.info("Also the ticks are now {}", tickCounter);
+
+                // Play anvil working sound again
+                if (tickCounter == 125) {
+                    level.playSound((Player)null, blockPos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
             }
             // If the hammer has been swinging at the anvil for 250 ticks, change the blockstate of the anvil to a horseshoe
             else if (tickCounter == 250 && event.player.getItemInHand(event.player.getUsedItemHand()).getItem() instanceof HammerItem) {
@@ -118,6 +132,10 @@ public class ModEvents {
             tickCounter = 0;
         }
     }
+
+//    // Open custom Horse Menu instead of vanilla
+//    @SubscribeEvent
+//    public static void onHorseInventoryOpen(){}
 
     // Convert floats to integers for horse speed
     public static int floatToInt(float floatNumber){

@@ -1,6 +1,9 @@
-package sylvernity.horseupgrades.block.custom;
+package com.sylvernity.horseupgrades.block.custom;
 
+import com.sylvernity.horseupgrades.block.ModBlocks;
+import com.sylvernity.horseupgrades.block.entity.HorseshoeAnvilBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -8,6 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -15,6 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
@@ -24,45 +29,64 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import sylvernity.horseupgrades.block.ModBlocks;
-import sylvernity.horseupgrades.block.entity.HorseshoeAnvilBlockEntity;
-import sylvernity.horseupgrades.blockstate.Holding;
-import sylvernity.horseupgrades.blockstate.Material;
-import sylvernity.horseupgrades.item.ModItems;
-import sylvernity.horseupgrades.item.custom.HorseshoeBarItem;
+import com.sylvernity.horseupgrades.blockstate.Holding;
+import com.sylvernity.horseupgrades.blockstate.Material;
+import com.sylvernity.horseupgrades.item.ModItems;
 
 public class HorseshoeAnvilBlock extends BaseEntityBlock{
 
-    protected static final VoxelShape SHAPE_BODY = Block.box(5, 0, 5, 11, 10, 11);
-    protected static final VoxelShape SHAPE_LOWER_BASE = Block.box(1, 0, 2, 15, 1, 14);
-    protected static final VoxelShape SHAPE_UPPER_BASE = Block.box(3, 0, 3, 13, 3, 13);
-    public static final VoxelShape SHAPE_BASE = Shapes.or(SHAPE_LOWER_BASE, SHAPE_UPPER_BASE);
-    public static final VoxelShape SHAPE_BOTTOM = Shapes.or(SHAPE_BASE, SHAPE_BODY);
-    protected static final VoxelShape SHAPE_SMALL_HEAD_TOP = Block.box(11, 13, 7, 13, 14, 9);
-    protected static final VoxelShape SHAPE_MAIN_HEAD = Block.box(4, 10, 4, 12, 13, 12);
-    protected static final VoxelShape SHAPE_HEAD_EAST_FIRST = Block.box(12, 10, 5, 14, 13, 11);
-    protected static final VoxelShape SHAPE_HEAD_EAST_SECOND = Block.box(14, 11, 6, 16, 13, 10);
-    protected static final VoxelShape SHAPE_HEAD_EAST_THIRD = Block.box(16, 12, 7, 17, 13, 9);
-    protected static final VoxelShape SHAPE_HEAD_WEST = Block.box(2, 11, 5, 4, 13, 11);
-    protected static final VoxelShape SHAPE_MAIN_HEAD_TOP = Block.box(5, 13, 5, 11, 14, 11);
-    public static final VoxelShape SHAPE_HEAD = Shapes.or(SHAPE_SMALL_HEAD_TOP, SHAPE_MAIN_HEAD, SHAPE_MAIN_HEAD_TOP, SHAPE_HEAD_EAST_FIRST, SHAPE_HEAD_EAST_SECOND, SHAPE_HEAD_EAST_THIRD, SHAPE_HEAD_WEST);
-    public static final VoxelShape SHAPE = Shapes.or(SHAPE_BOTTOM, SHAPE_HEAD);
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
+    protected static final VoxelShape SHAPE_BODY = Block.box(5, 0, 5, 11, 10, 11);
+    protected static final VoxelShape SHAPE_UPPER_BASE = Block.box(3, 0, 3, 13, 3, 13);
+    protected static final VoxelShape SHAPE_MAIN_HEAD = Block.box(4, 10, 4, 12, 13, 12);
+    protected static final VoxelShape SHAPE_MAIN_HEAD_TOP = Block.box(5, 13, 5, 11, 14, 11);
+    protected static final VoxelShape X_SHAPE_LOWER_BASE = Block.box(1, 0, 2, 15, 1, 14);
+    public static final VoxelShape X_SHAPE_BASE = Shapes.or(X_SHAPE_LOWER_BASE, SHAPE_UPPER_BASE);
+    public static final VoxelShape X_SHAPE_BOTTOM = Shapes.or(X_SHAPE_BASE, SHAPE_BODY);
+    protected static final VoxelShape X_SHAPE_SMALL_HEAD_TOP = Block.box(11, 13, 7, 13, 14, 9);
+    protected static final VoxelShape X_SHAPE_HEAD_EAST_FIRST = Block.box(12, 10, 5, 14, 13, 11);
+    protected static final VoxelShape X_SHAPE_HEAD_EAST_SECOND = Block.box(14, 11, 6, 16, 13, 10);
+    protected static final VoxelShape X_SHAPE_HEAD_EAST_THIRD = Block.box(16, 12, 7, 17, 13, 9);
+    protected static final VoxelShape X_SHAPE_HEAD_WEST = Block.box(2, 11, 5, 4, 13, 11);
+    public static final VoxelShape X_SHAPE_HEAD = Shapes.or(X_SHAPE_SMALL_HEAD_TOP, SHAPE_MAIN_HEAD, SHAPE_MAIN_HEAD_TOP, X_SHAPE_HEAD_EAST_FIRST, X_SHAPE_HEAD_EAST_SECOND, X_SHAPE_HEAD_EAST_THIRD, X_SHAPE_HEAD_WEST);
+    public static final VoxelShape X_SHAPE = Shapes.or(X_SHAPE_BOTTOM, X_SHAPE_HEAD);
+
+
+    protected static final VoxelShape Z_SHAPE_LOWER_BASE = Block.box(2, 0, 1, 14, 1, 15);
+    public static final VoxelShape Z_SHAPE_BASE = Shapes.or(Z_SHAPE_LOWER_BASE, SHAPE_UPPER_BASE);
+    public static final VoxelShape Z_SHAPE_BOTTOM = Shapes.or(Z_SHAPE_BASE, SHAPE_BODY);
+    protected static final VoxelShape Z_SHAPE_SMALL_HEAD_TOP = Block.box(7, 13, 11, 9, 14, 13);
+    protected static final VoxelShape Z_SHAPE_HEAD_EAST_FIRST = Block.box(5, 10, 12, 11, 13, 14);
+    protected static final VoxelShape Z_SHAPE_HEAD_EAST_SECOND = Block.box(6, 11, 14, 10, 13, 16);
+    protected static final VoxelShape Z_SHAPE_HEAD_EAST_THIRD = Block.box(7, 12, 16, 9, 13, 17);
+    protected static final VoxelShape Z_SHAPE_HEAD_WEST = Block.box(5, 11, 2, 11, 13, 4);
+    public static final VoxelShape Z_SHAPE_HEAD = Shapes.or(Z_SHAPE_SMALL_HEAD_TOP, SHAPE_MAIN_HEAD, SHAPE_MAIN_HEAD_TOP, Z_SHAPE_HEAD_EAST_FIRST, Z_SHAPE_HEAD_EAST_SECOND, Z_SHAPE_HEAD_EAST_THIRD, Z_SHAPE_HEAD_WEST);
+    public static final VoxelShape Z_SHAPE = Shapes.or(Z_SHAPE_BOTTOM, Z_SHAPE_HEAD);
     public static final EnumProperty<Holding> HOLDING = EnumProperty.create("holding", Holding.class);
     public static final EnumProperty<Material> MATERIAL = EnumProperty.create("material", Material.class);
-
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE;
-    }
 
     public HorseshoeAnvilBlock(BlockBehaviour.Properties pProperties) {
         super(pProperties);
         if(!ModBlocks.HORSESHOE_ANVIL.getKey().equals(ForgeRegistries.BLOCKS.getKey(this))){
-            this.registerDefaultState(this.stateDefinition.any().setValue(HOLDING, Holding.NONE).setValue(MATERIAL, Material.NONE));
+            this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HOLDING, Holding.NONE).setValue(MATERIAL, Material.NONE));
         }
     }
 
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getClockWise());
+    }
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        Direction direction = pState.getValue(FACING);
+        return direction.getAxis() == Direction.Axis.X ? X_SHAPE : Z_SHAPE;
+    }
+
+    public BlockState rotate(BlockState pState, Rotation pRot) {
+        return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING)));
+    }
+
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
         builder.add(HOLDING);
         builder.add(MATERIAL);
     }
@@ -119,19 +143,20 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             ItemStack itemStack = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
 
-            if (itemStack.isEmpty() || itemStack.getItem() instanceof HorseshoeBarItem) {
-                // If player has no item in hand or is holding a Horseshoe Bar, retrieve bar from anvil
-                if (pState.getValue(HOLDING) == Holding.BAR) {
-                    if (pState.getValue(MATERIAL) == Material.IRON) {
-                        pPlayer.addItem(new ItemStack(ModItems.IRON_HORSESHOE_BAR.get()));
-                    } else if (pState.getValue(MATERIAL) == Material.GOLD) {
-                        pPlayer.addItem(new ItemStack(ModItems.GOLDEN_HORSESHOE_BAR.get()));
-                    } else if (pState.getValue(MATERIAL) == Material.DIAMOND) {
-                        pPlayer.addItem(new ItemStack(ModItems.DIAMOND_HORSESHOE_BAR.get()));
-                    }
+            // Retrieve bar from anvil
+            if (pState.getValue(HOLDING) == Holding.BAR) {
+                if (pState.getValue(MATERIAL) == Material.IRON) {
+                    pPlayer.addItem(new ItemStack(ModItems.IRON_HORSESHOE_BAR.get()));
+                } else if (pState.getValue(MATERIAL) == Material.GOLD) {
+                    pPlayer.addItem(new ItemStack(ModItems.GOLDEN_HORSESHOE_BAR.get()));
+                } else if (pState.getValue(MATERIAL) == Material.DIAMOND) {
+                    pPlayer.addItem(new ItemStack(ModItems.DIAMOND_HORSESHOE_BAR.get()));
                 }
-                // If player has no item in hand or is holding a Horseshoe Bar, retrieve horseshoe from anvil
-                else if (pState.getValue(HOLDING) == Holding.HORSESHOE) {
+                pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.NONE).setValue(HOLDING, Holding.NONE), 3);
+            }
+            
+            // Retrieve horseshoe from anvil
+            else if (pState.getValue(HOLDING) == Holding.HORSESHOE) {
                     if (pState.getValue(MATERIAL) == Material.IRON) {
                         pPlayer.addItem(new ItemStack(ModItems.IRON_HORSESHOE.get()));
                     } else if (pState.getValue(MATERIAL) == Material.GOLD) {
@@ -139,7 +164,6 @@ public class HorseshoeAnvilBlock extends BaseEntityBlock{
                     } else if (pState.getValue(MATERIAL) == Material.DIAMOND) {
                         pPlayer.addItem(new ItemStack(ModItems.DIAMOND_HORSESHOE.get()));
                     }
-                }
                 pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.NONE).setValue(HOLDING, Holding.NONE), 3);
             }
         }
