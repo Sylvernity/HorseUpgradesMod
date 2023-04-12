@@ -1,4 +1,4 @@
-package sylvernity.horseupgrades.item.custom;
+package com.sylvernity.horseupgrades.item.custom;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorMaterials;

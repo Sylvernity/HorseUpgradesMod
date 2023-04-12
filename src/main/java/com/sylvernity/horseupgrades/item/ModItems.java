@@ -1,16 +1,15 @@
-package sylvernity.horseupgrades.item;
+package com.sylvernity.horseupgrades.item;
 
+import com.sylvernity.horseupgrades.HorseUpgrades;
+import com.sylvernity.horseupgrades.item.custom.HorseshoeBarItem;
+import com.sylvernity.horseupgrades.item.custom.HorseshoeItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tiers;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import sylvernity.horseupgrades.HorseUpgrades;
-import sylvernity.horseupgrades.item.custom.HammerItem;
-import sylvernity.horseupgrades.item.custom.HorseshoeBarItem;
-import sylvernity.horseupgrades.item.custom.HorseshoeItem;
+import com.sylvernity.horseupgrades.item.custom.HammerItem;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, HorseUpgrades.MODID);
@@ -32,8 +31,7 @@ public class ModItems {
     public static final RegistryObject<Item> DIAMOND_HAMMER = ITEMS.register("diamond_hammer", () -> new HammerItem("diamond_hammer"/*, Tiers.DIAMOND*/, (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB))));
     public static final RegistryObject<Item> NETHERITE_HAMMER = ITEMS.register("netherite_hammer", () -> new HammerItem("netherite_hammer"/*, Tiers.NETHERITE*/, (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB))));
 
-
-
+    
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);

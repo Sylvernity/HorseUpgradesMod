@@ -1,25 +1,116 @@
 {
   "variants": {
-    "holding=none,material=none": {
-      "model": "horseupgrades:block/horseshoe_anvil_empty"
+    "facing=north,holding=none,material=none": {
+      "model": "horseupgrades:block/horseshoe_anvil_empty",
+      "y": 90
     },
-    "holding=bar,material=iron": {
-      "model": "horseupgrades:block/horseshoe_anvil_iron_bar"
+    "facing=east,holding=none,material=none": {
+      "model": "horseupgrades:block/horseshoe_anvil_empty",
+      "y": 0
     },
-    "holding=bar,material=gold": {
-      "model": "horseupgrades:block/horseshoe_anvil_golden_bar"
+    "facing=south,holding=none,material=none":{
+      "model": "horseupgrades:block/horseshoe_anvil_empty",
+      "y": 90
     },
-    "holding=bar,material=diamond": {
-      "model": "horseupgrades:block/horseshoe_anvil_diamond_bar"
+    "facing=west,holding=none,material=none": {
+      "model": "horseupgrades:block/horseshoe_anvil_empty",
+      "y": 0
     },
-    "holding=horseshoe,material=iron": {
-      "model": "horseupgrades:block/horseshoe_anvil_iron_horseshoe"
+    "facing=north,holding=bar,material=iron": {
+      "model": "horseupgrades:block/horseshoe_anvil_iron_bar",
+      "y": 90
     },
-    "holding=horseshoe,material=gold": {
-      "model": "horseupgrades:block/horseshoe_anvil_golden_horseshoe"
+    "facing=east,holding=bar,material=iron": {
+      "model": "horseupgrades:block/horseshoe_anvil_iron_bar",
+      "y": 0
     },
-    "holding=horseshoe,material=diamond": {
-      "model": "horseupgrades:block/horseshoe_anvil_diamond_horseshoe"
+    "facing=south,holding=bar,material=iron": {
+      "model": "horseupgrades:block/horseshoe_anvil_iron_bar",
+      "y": 90
+    },
+    "facing=west,holding=bar,material=iron": {
+      "model": "horseupgrades:block/horseshoe_anvil_iron_bar",
+      "y": 0
+    },
+    "facing=north,holding=bar,material=gold": {
+      "model": "horseupgrades:block/horseshoe_anvil_golden_bar",
+      "y": 90
+    },
+    "facing=east,holding=bar,material=gold": {
+      "model": "horseupgrades:block/horseshoe_anvil_golden_bar",
+      "y": 0
+    },
+    "facing=south,holding=bar,material=gold": {
+      "model": "horseupgrades:block/horseshoe_anvil_golden_bar",
+      "y": 90
+    },
+    "facing=west,holding=bar,material=gold": {
+      "model": "horseupgrades:block/horseshoe_anvil_golden_bar",
+      "y": 0
+    },
+    "facing=north,holding=bar,material=diamond": {
+      "model": "horseupgrades:block/horseshoe_anvil_diamond_bar",
+      "y": 90
+    },
+    "facing=east,holding=bar,material=diamond": {
+      "model": "horseupgrades:block/horseshoe_anvil_diamond_bar",
+      "y": 0
+    },
+    "facing=south,holding=bar,material=diamond": {
+      "model": "horseupgrades:block/horseshoe_anvil_diamond_bar",
+      "y": 90
+    },
+    "facing=west,holding=bar,material=diamond": {
+      "model": "horseupgrades:block/horseshoe_anvil_diamond_bar",
+      "y": 0
+    },
+    "facing=north,holding=horseshoe,material=iron": {
+      "model": "horseupgrades:block/horseshoe_anvil_iron_horseshoe",
+      "y": 90
+    },
+    "facing=east,holding=horseshoe,material=iron": {
+      "model": "horseupgrades:block/horseshoe_anvil_iron_horseshoe",
+      "y": 0
+    },
+    "facing=south,holding=horseshoe,material=iron": {
+      "model": "horseupgrades:block/horseshoe_anvil_iron_horseshoe",
+      "y": 90
+    },
+    "facing=west,holding=horseshoe,material=iron": {
+      "model": "horseupgrades:block/horseshoe_anvil_iron_horseshoe",
+      "y": 0
+    },
+    "facing=north,holding=horseshoe,material=gold": {
+      "model": "horseupgrades:block/horseshoe_anvil_golden_horseshoe",
+      "y": 90
+    },
+    "facing=east,holding=horseshoe,material=gold": {
+      "model": "horseupgrades:block/horseshoe_anvil_golden_horseshoe",
+      "y": 0
+    },
+    "facing=south,holding=horseshoe,material=gold": {
+      "model": "horseupgrades:block/horseshoe_anvil_golden_horseshoe",
+      "y": 90
+    },
+    "facing=west,holding=horseshoe,material=gold": {
+      "model": "horseupgrades:block/horseshoe_anvil_golden_horseshoe",
+      "y": 0
+    },
+    "facing=north,holding=horseshoe,material=diamond": {
+      "model": "horseupgrades:block/horseshoe_anvil_diamond_horseshoe",
+      "y": 90
+    },
+    "facing=east,holding=horseshoe,material=diamond": {
+      "model": "horseupgrades:block/horseshoe_anvil_diamond_horseshoe",
+      "y": 0
+    },
+    "facing=south,holding=horseshoe,material=diamond": {
+      "model": "horseupgrades:block/horseshoe_anvil_diamond_horseshoe",
+      "y": 90
+    },
+    "facing=west,holding=horseshoe,material=diamond": {
+      "model": "horseupgrades:block/horseshoe_anvil_diamond_horseshoe",
+      "y": 0
     }
   }
 }
