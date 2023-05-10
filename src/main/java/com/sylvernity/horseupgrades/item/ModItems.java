@@ -1,6 +1,7 @@
 package com.sylvernity.horseupgrades.item;
 
 import com.sylvernity.horseupgrades.HorseUpgrades;
+import com.sylvernity.horseupgrades.item.custom.HorseElytraItem;
 import com.sylvernity.horseupgrades.item.custom.HorseshoeBarItem;
 import com.sylvernity.horseupgrades.item.custom.HorseshoeItem;
 import net.minecraft.world.item.ArmorMaterials;
@@ -31,7 +32,8 @@ public class ModItems {
     public static final RegistryObject<Item> DIAMOND_HAMMER = ITEMS.register("diamond_hammer", () -> new HammerItem("diamond_hammer"/*, Tiers.DIAMOND*/, (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB))));
     public static final RegistryObject<Item> NETHERITE_HAMMER = ITEMS.register("netherite_hammer", () -> new HammerItem("netherite_hammer"/*, Tiers.NETHERITE*/, (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB))));
 
-    
+    // Register Horse Elytra
+    public static final RegistryObject<Item> HORSE_ELYTRA = ITEMS.register("horse_elytra", () -> new HorseElytraItem(1, "horse_elytra", (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB))));
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);
