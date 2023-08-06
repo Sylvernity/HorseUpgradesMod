@@ -4,7 +4,6 @@ import com.sylvernity.horseupgrades.HorseUpgrades;
 import com.sylvernity.horseupgrades.blockstate.Material;
 import com.sylvernity.horseupgrades.item.custom.HorseshoeBarItem;
 import com.sylvernity.horseupgrades.item.custom.HorseshoeItem;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tiers;
@@ -15,6 +14,11 @@ import net.minecraftforge.registries.RegistryObject;
 import com.sylvernity.horseupgrades.item.custom.HammerItem;
 
 public class ModItems {
+
+    private ModItems() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, HorseUpgrades.MODID);
 
     // Register Horseshoe Bars
