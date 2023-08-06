@@ -1,10 +1,10 @@
 package sylvernity.horseupgrades.datagen.tags;
 
+import com.sylvernity.horseupgrades.block.ModBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
-import sylvernity.horseupgrades.block.ModBlocks;
 
 public class ModTagsProvider<T> extends BlockTagsProvider {
 

@@ -1,6 +1,5 @@
 package com.sylvernity.horseupgrades.event;
 
-import com.google.common.eventbus.Subscribe;
 import com.sylvernity.horseupgrades.HorseUpgrades;
 import com.sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock;
 import com.sylvernity.horseupgrades.block.entity.HorseshoeAnvilBlockEntity;
@@ -16,25 +15,28 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import com.sylvernity.horseupgrades.blockstate.Material;
 
-import javax.swing.event.MenuEvent;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = HorseUpgrades.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
 
-    public static AttributeModifier attributeModifier;
-    public static boolean clickedInitial = false;
-    public static int tickCounter = 0;
-    public static BlockPos blockPos;
+    private static AttributeModifier attributeModifier;
+    private static boolean clickedInitial = false;
+    private static int tickCounter = 0;
+    private static BlockPos blockPos;
 
     // Run this when equipment has been changed for an entity. Adds speed modifier when horseshoe added
     @SubscribeEvent
@@ -81,19 +83,23 @@ public class ModEvents {
     public static void startHammering(PlayerInteractEvent.LeftClickBlock event) {
         if (!event.getEntity().level.isClientSide()) {
             // If player is holding hammer
-            if (event.getItemStack().getItem() instanceof HammerItem) {
+            Item itemInUse = event.getItemStack().getItem();
+            if (itemInUse instanceof HammerItem) {
                 // If block used on is a horseshoe anvil
                 if (event.getLevel().getBlockEntity(event.getPos()) instanceof HorseshoeAnvilBlockEntity) {
-                    // If anvil has a horseshoe bar
-                    if (event.getLevel().getBlockState(event.getPos()).getValue(HorseshoeAnvilBlock.HOLDING) == Holding.BAR) {
-                        // Hammer has hit anvil
-                        clickedInitial = true;
+                    // If anvil has a horseshoe bar with material value lower or equal to hammer
+                    BlockState anvilBlockState = event.getLevel().getBlockState(event.getPos());
+                    if (anvilBlockState.getValue(HorseshoeAnvilBlock.HOLDING) == Holding.BAR){
+                        if (anvilBlockState.getValue(HorseshoeAnvilBlock.MATERIAL) != Material.DIAMOND || ((HammerItem) itemInUse).getMaterial().equals("diamond") || ((HammerItem) itemInUse).getMaterial().equals("netherite")) {
+                            // Hammer has hit anvil
+                            clickedInitial = true;
 
-                        // Get position of anvil hit
-                        blockPos = event.getPos();
+                            // Get position of anvil hit
+                            blockPos = event.getPos();
 
-                        // Play Anvil working sound
-                        event.getLevel().playSound((Player)null, event.getPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                            // Play Anvil working sound
+                            event.getLevel().playSound((Player)null, event.getPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        }
                     }
                 }
             }
@@ -103,27 +109,40 @@ public class ModEvents {
     // Run this every tick when startHammer changes global variables
     @SubscribeEvent
     public static void onTickHammer(TickEvent.PlayerTickEvent event) {
-        // If the player is swinging a Hammer
-        if (event.player.swinging && event.player.getItemInHand(event.player.getUsedItemHand()).getItem() instanceof HammerItem){
-            Level level = event.player.level;
-            // If the initial click was on a horseshoe anvil and it hasn't been 250 ticks of constant swinging
-            if (clickedInitial && tickCounter < 250){
-                tickCounter ++;
-                HorseUpgrades.LOGGER.info("Also the ticks are now {}", tickCounter);
+        ItemStack itemStackUsed = event.player.getItemInHand(event.player.getUsedItemHand());
+        Item itemInUse = itemStackUsed.getItem();
 
-                // Play anvil working sound again
-                if (tickCounter == 125) {
-                    level.playSound((Player)null, blockPos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                }
+        // If the player is swinging a Hammer
+        if (event.player.swinging && itemInUse instanceof HammerItem){
+            Level level = event.player.level;
+            int ticksNeeded = 2250;
+
+            // Determine the amount of hammering required based on hammer tier
+            ticksNeeded /= (int) ((HammerItem) itemInUse).getTier().getSpeed();
+
+            // If the initial click was on a horseshoe anvil and it hasn't been long enough of constant swinging, increment by 1
+            if (clickedInitial && tickCounter < ticksNeeded){
+                tickCounter ++;
             }
-            // If the hammer has been swinging at the anvil for 250 ticks, change the blockstate of the anvil to a horseshoe
-            else if (tickCounter == 250 && event.player.getItemInHand(event.player.getUsedItemHand()).getItem() instanceof HammerItem) {
+
+            // If the hammer has been swinging at the anvil long enough, change the blockstate of the anvil to a horseshoe
+            else if (tickCounter == ticksNeeded) {
                 clickedInitial = false;
                 tickCounter = 0;
+
+                // Change blockstate and play anvil sound
                 HorseshoeAnvilBlockEntity anvilBlock = (HorseshoeAnvilBlockEntity) event.player.getLevel().getBlockEntity(blockPos);
                 Material prevMaterial = anvilBlock.getBlockState().getValue(HorseshoeAnvilBlock.MATERIAL);
                 level.setBlock(blockPos, level.getBlockState(blockPos).setValue(HorseshoeAnvilBlock.HOLDING, Holding.HORSESHOE).setValue(HorseshoeAnvilBlock.MATERIAL, prevMaterial), 3);
+                level.playSound((Player)null, blockPos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+                // Fire blockstate change event
                 level.gameEvent(event.player, GameEvent.BLOCK_CHANGE, blockPos);
+
+                // Remove 1 durability from the tool used
+                itemStackUsed.hurtAndBreak(1, event.player, (entity) -> {
+                    event.player.broadcastBreakEvent(event.player.getUsedItemHand());
+                });
             }
         }
         // Reset variables if hammer is no longer being swung
@@ -133,17 +152,25 @@ public class ModEvents {
         }
     }
 
-//    // Open custom Horse Menu instead of vanilla
-//    @SubscribeEvent
-//    public static void onHorseInventoryOpen(){}
+    // Run this when a block is broken
+    @SubscribeEvent
+    public static void onBlockBrokenWithHammer(BlockEvent.BreakEvent event) {
+        ItemStack itemStackUsed = event.getPlayer().getItemInHand(event.getPlayer().getUsedItemHand());
+        if (itemStackUsed.getItem() instanceof HammerItem) {
+            // Remove 1 Durability from the Hammer when it is used to break a block
+            itemStackUsed.hurtAndBreak(1, event.getPlayer(), (entity) -> {
+                event.getPlayer().broadcastBreakEvent(event.getPlayer().getUsedItemHand());
+            });
+        }
+    }
 
     // Convert floats to integers for horse speed
-    public static int floatToInt(float floatNumber){
+    private static int floatToInt(float floatNumber){
         return (int) (floatNumber * 10000);
     }
 
     // Convert integers to floats for horse speed
-    public static float intToFloat(int intNumber){
+    private static float intToFloat(int intNumber){
         return (float) (intNumber / 10000.0);
     }
 }
