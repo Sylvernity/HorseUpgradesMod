@@ -1,6 +1,7 @@
 package com.sylvernity.horseupgrades.blockstate;
 
 import net.minecraft.util.StringRepresentable;
+import org.jetbrains.annotations.NotNull;
 
 public enum Material implements StringRepresentable {
     NONE("none"),
@@ -20,11 +21,8 @@ public enum Material implements StringRepresentable {
         return this.getSerializedName();
     }
 
-    public String getSerializedName() {
+    public @NotNull String getSerializedName() {
         return this.name;
     }
 
-    public boolean isConnected() {
-        return this != NONE;
-    }
 }
