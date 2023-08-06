@@ -1,11 +1,13 @@
 package com.sylvernity.horseupgrades.item;
 
 import com.sylvernity.horseupgrades.HorseUpgrades;
-import com.sylvernity.horseupgrades.item.custom.HorseElytraItem;
+import com.sylvernity.horseupgrades.blockstate.Material;
 import com.sylvernity.horseupgrades.item.custom.HorseshoeBarItem;
 import com.sylvernity.horseupgrades.item.custom.HorseshoeItem;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,13 +29,10 @@ public class ModItems {
     public static final RegistryObject<Item> NETHERITE_HORSESHOE = ITEMS.register("netherite_horseshoe", () -> new HorseshoeItem(0, "netherite_horseshoe" , (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB)), ArmorMaterials.NETHERITE));
 
     // Register Hammers
-    public static final RegistryObject<Item> IRON_HAMMER = ITEMS.register("iron_hammer", () -> new HammerItem("iron_hammer"/*, Tiers.IRON*/, (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB))));
-    public static final RegistryObject<Item> GOLDEN_HAMMER = ITEMS.register("golden_hammer", () -> new HammerItem("golden_hammer"/*, Tiers.GOLD*/, (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB))));
-    public static final RegistryObject<Item> DIAMOND_HAMMER = ITEMS.register("diamond_hammer", () -> new HammerItem("diamond_hammer"/*, Tiers.DIAMOND*/, (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB))));
-    public static final RegistryObject<Item> NETHERITE_HAMMER = ITEMS.register("netherite_hammer", () -> new HammerItem("netherite_hammer"/*, Tiers.NETHERITE*/, (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB))));
-
-    // Register Horse Elytra
-    public static final RegistryObject<Item> HORSE_ELYTRA = ITEMS.register("horse_elytra", () -> new HorseElytraItem(1, "horse_elytra", (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB))));
+    public static final RegistryObject<Item> IRON_HAMMER = ITEMS.register("iron_hammer", () -> new HammerItem("iron_hammer", (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB).durability(30)), Material.IRON, Tiers.IRON));
+    public static final RegistryObject<Item> GOLDEN_HAMMER = ITEMS.register("golden_hammer", () -> new HammerItem("golden_hammer", (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB).durability(5)), Material.GOLD, Tiers.GOLD));
+    public static final RegistryObject<Item> DIAMOND_HAMMER = ITEMS.register("diamond_hammer", () -> new HammerItem("diamond_hammer", (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB).durability(50)), Material.DIAMOND, Tiers.DIAMOND));
+    public static final RegistryObject<Item> NETHERITE_HAMMER = ITEMS.register("netherite_hammer", () -> new HammerItem("netherite_hammer", (new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.HORSE_UPGRADES_TAB).durability(80)), Material.NETHERITE, Tiers.NETHERITE));
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);
