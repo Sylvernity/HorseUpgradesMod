@@ -11,7 +11,7 @@ public class HammerItem extends TieredItem {
 
     private Material toolMaterial;
 
-    public HammerItem(String pIdentifier, Properties pProperties, Material pMaterial, Tier pTier){
+    public HammerItem(Properties pProperties, Material pMaterial, Tier pTier){
         this(pTier, pProperties);
         toolMaterial = pMaterial;
     }
