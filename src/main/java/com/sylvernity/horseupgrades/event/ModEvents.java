@@ -7,9 +7,11 @@ import com.sylvernity.horseupgrades.blockstate.Holding;
 import com.sylvernity.horseupgrades.item.custom.HammerItem;
 import com.sylvernity.horseupgrades.item.custom.HorseshoeItem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.Horse;
@@ -20,8 +22,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -37,6 +41,7 @@ public class ModEvents {
     private static boolean clickedInitial = false;
     private static int tickCounter = 0;
     private static BlockPos blockPos;
+    private static int stepCounter = 0;
 
     // Run this when equipment has been changed for an entity. Adds speed modifier when horseshoe added
     @SubscribeEvent
@@ -49,7 +54,6 @@ public class ModEvents {
                     int speed = floatToInt((float) entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
                     int bonus = 0;
 
-                    HorseUpgrades.LOGGER.info("Base Horse Speed Value is: {}", speed);
                     // When old item in slot is horseshoe, remove old speed bonus
                     if (event.getFrom().getItem() instanceof HorseshoeItem){
                         Objects.requireNonNull(entity.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(attributeModifier);
@@ -69,7 +73,6 @@ public class ModEvents {
                         }
                         attributeModifier = new AttributeModifier("Horseshoe Speed Bonus", intToFloat(bonus), AttributeModifier.Operation.ADDITION);
                         Objects.requireNonNull(entity.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(attributeModifier);
-                        HorseUpgrades.LOGGER.info("Bonus Horse Speed Value is: {}", speed + bonus);
                     }
 
                 }
@@ -164,10 +167,38 @@ public class ModEvents {
         }
     }
 
+    // Run this when horse takes a step
+    @SubscribeEvent
+    public static void onHorseStepWithHorseshoe(LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (!entity.level.isClientSide() && entity instanceof Horse && ((Horse) entity).hasExactlyOnePlayerPassenger() && ((Horse) entity).getArmor().getItem() instanceof HorseshoeItem) {
+            Horse horse = (Horse) entity;
+
+            double xMotion = horse.getControllingPassenger().getDeltaMovement().get(Direction.Axis.X);
+            double zMotion = horse.getControllingPassenger().getDeltaMovement().get(Direction.Axis.Z);
+
+            ItemStack horseshoeStack = horse.getArmor();
+            if (horseshoeStack.getItem() instanceof HorseshoeItem) {
+                if(xMotion != 0 || zMotion != 0) {
+                    stepCounter += 1;
+                    HorseUpgrades.LOGGER.info(String.valueOf(stepCounter));
+                    if(stepCounter == 3) {
+                        stepCounter = 0;
+                        horseshoeStack.hurtAndBreak(1, horse, (consumer) -> {
+                            entity.broadcastBreakEvent(Objects.requireNonNull(LivingEntity.getEquipmentSlotForItem(horseshoeStack)));
+                        });
+
+                    }
+                }
+            }
+        }
+    }
+
     // Convert floats to integers for horse speed
     private static int floatToInt(float floatNumber){
         return (int) (floatNumber * 10000);
     }
+
 
     // Convert integers to floats for horse speed
     private static float intToFloat(int intNumber){
