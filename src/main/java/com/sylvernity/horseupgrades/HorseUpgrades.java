@@ -1,3 +1,8 @@
+/*
+        Horse Upgrades Minecraft Mod
+        Copyright (C) 2023 Sylvernity
+*/
+
 package com.sylvernity.horseupgrades;
 
 import com.mojang.logging.LogUtils;

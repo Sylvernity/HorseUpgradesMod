@@ -1,8 +1,12 @@
+/*
+        Horse Upgrades Minecraft Mod
+        Copyright (C) 2023 Sylvernity
+*/
+
 package com.sylvernity.horseupgrades.item.custom;
 
 import com.sylvernity.horseupgrades.HorseUpgrades;
 import com.sylvernity.horseupgrades.blockstate.Material;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
