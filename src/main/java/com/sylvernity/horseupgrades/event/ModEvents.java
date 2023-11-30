@@ -1,3 +1,8 @@
+/*
+        Horse Upgrades Minecraft Mod
+        Copyright (C) 2023 Sylvernity
+*/
+
 package com.sylvernity.horseupgrades.event;
 
 import com.sylvernity.horseupgrades.HorseUpgrades;
@@ -22,7 +27,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -181,13 +185,11 @@ public class ModEvents {
             if (horseshoeStack.getItem() instanceof HorseshoeItem) {
                 if(xMotion != 0 || zMotion != 0) {
                     stepCounter += 1;
-                    HorseUpgrades.LOGGER.info(String.valueOf(stepCounter));
                     if(stepCounter == 3) {
                         stepCounter = 0;
                         horseshoeStack.hurtAndBreak(1, horse, (consumer) -> {
                             entity.broadcastBreakEvent(Objects.requireNonNull(LivingEntity.getEquipmentSlotForItem(horseshoeStack)));
                         });
-
                     }
                 }
             }
