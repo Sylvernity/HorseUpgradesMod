@@ -2,7 +2,7 @@
 
 This is the GitHub repository for the Horse Upgrades mod, which can be downloaded from [Modrinth](https://modrinth.com/mod/horse-upgrades).
 
-This mod adds horseshoes which allow horses to move faster across terrain.
+This mod adds horseshoes to Minecraft, which allow horses to move faster across terrain.
 
 ## Dependencies
 
