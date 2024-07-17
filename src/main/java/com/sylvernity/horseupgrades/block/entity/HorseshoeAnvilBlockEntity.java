@@ -112,29 +112,11 @@ public class HorseshoeAnvilBlockEntity extends BlockEntity implements MenuProvid
         itemHandler.deserializeNBT(pTag.getCompound("inventory"));
     }
 
-    /*public void drops(){
-        /*SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-
-        inventory.setItem(1, itemHandler.getStackInSlot(0));
-
-        Containers.dropContents(this.level, this.worldPosition);
-    }
-    */
-
     public void setBar(ItemStack pStack) {
         this.setBar(pStack, (Player)null);
     }
 
     public void setBar(ItemStack pStack, @Nullable Player pPlayer) {
-        //this.bar = this.resolveBar(pStack, pPlayer);
         this.setChanged();
-    }
-
-    public static <E extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState blockState, HorseshoeAnvilBlockEntity pEntity) {
-        if(level.isClientSide()){
-            return;
-        }
-
-
     }
 }

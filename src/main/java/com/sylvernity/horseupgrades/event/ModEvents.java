@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -24,7 +25,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.event.TickEvent;
@@ -36,6 +39,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import com.sylvernity.horseupgrades.blockstate.Material;
 
+import javax.tools.Tool;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = HorseUpgrades.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -72,9 +76,11 @@ public class ModEvents {
                         } else if (material == ArmorMaterials.NETHERITE) {
                             bonus = 1200;
                         }
-                        if (speed + bonus > 3375) {
-                            bonus = 3375 - speed;
-                        }
+                        /* Uncomment to prevent horses from passing natural maximum speed
+                        * if (speed + bonus > 3375) {
+                        *   bonus = 3375 - speed;
+                        * }
+                        * */
                         attributeModifier = new AttributeModifier("Horseshoe Speed Bonus", intToFloat(bonus), AttributeModifier.Operation.ADDITION);
                         Objects.requireNonNull(entity.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(attributeModifier);
                     }
@@ -171,7 +177,7 @@ public class ModEvents {
         }
     }
 
-    // Run this when horse takes a step
+    // Run this when horse takes a step. Handle durability loss.
     @SubscribeEvent
     public static void onHorseStepWithHorseshoe(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
