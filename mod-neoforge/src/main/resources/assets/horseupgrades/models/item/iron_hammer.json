@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "horseupgrades:item/iron_hammer"
+  }
+}

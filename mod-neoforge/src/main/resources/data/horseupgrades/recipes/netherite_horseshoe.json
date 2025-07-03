@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "base": {
+    "item": "horseupgrades:diamond_horseshoe"
+  },
+  "result": {
+    "item": "horseupgrades:netherite_horseshoe"
+  }
+}

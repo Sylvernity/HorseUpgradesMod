@@ -1,4 +1,4 @@
-# ![Image](./src/main/resources/iron_horseshoe.png) Horse Upgrades - Minecraft Forge 1.19.2
+# ![Image](mod-forge/src/main/resources/iron_horseshoe.png) Horse Upgrades - Minecraft Forge 1.19.2
 
 This is the GitHub repository for the Horse Upgrades mod, which can be downloaded from [Modrinth](https://modrinth.com/mod/horse-upgrades).
 
