@@ -37,7 +37,7 @@ Hammer (Can be iron, gold, or diamond):
 
 
 # Dependencies
-- Minecraft Forge
+- Minecraft NeoForge
 
 ## Suggested Mods
 
