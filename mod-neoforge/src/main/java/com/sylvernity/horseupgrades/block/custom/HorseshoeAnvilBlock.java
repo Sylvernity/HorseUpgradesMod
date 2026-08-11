@@ -13,7 +13,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -33,14 +32,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.sylvernity.horseupgrades.blockstate.Holding;
 import com.sylvernity.horseupgrades.blockstate.Material;
 import com.sylvernity.horseupgrades.item.ModItems;
-
-import static com.sylvernity.horseupgrades.block.ModBlocks.BLOCKS;
 
 public class HorseshoeAnvilBlock extends Block implements EntityBlock {
 
@@ -139,6 +135,8 @@ public class HorseshoeAnvilBlock extends Block implements EntityBlock {
                 pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.DIAMOND).setValue(HOLDING, Holding.BAR), 3);
             }
 
+            // Update inventory of Anvil
+            horseshoeAnvilBlockEntity.setContent(new ItemStack(pItem));
             pLevel.playSound((Player)null, pPos, SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
             pLevel.gameEvent(pPlayer, GameEvent.BLOCK_CHANGE, pPos);
         }
@@ -149,29 +147,13 @@ public class HorseshoeAnvilBlock extends Block implements EntityBlock {
     @Override
     public @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if(!pLevel.isClientSide()){
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            // Retrieve bar or horseshoe from anvil
+            if (pState.getValue(HOLDING) != Holding.NONE) {
+                // Update inventory of Anvil
+                HorseshoeAnvilBlockEntity anvilBlockEntity = (HorseshoeAnvilBlockEntity) pLevel.getBlockEntity(pPos);
+                pPlayer.addItem(anvilBlockEntity.retrieveContent());
 
-            // Retrieve bar from anvil
-            if (pState.getValue(HOLDING) == Holding.BAR) {
-                if (pState.getValue(MATERIAL) == Material.IRON) {
-                    pPlayer.addItem(new ItemStack(ModItems.IRON_HORSESHOE_BAR.get()));
-                } else if (pState.getValue(MATERIAL) == Material.GOLD) {
-                    pPlayer.addItem(new ItemStack(ModItems.GOLDEN_HORSESHOE_BAR.get()));
-                } else if (pState.getValue(MATERIAL) == Material.DIAMOND) {
-                    pPlayer.addItem(new ItemStack(ModItems.DIAMOND_HORSESHOE_BAR.get()));
-                }
-                pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.NONE).setValue(HOLDING, Holding.NONE), 3);
-            }
-            
-            // Retrieve horseshoe from anvil
-            else if (pState.getValue(HOLDING) == Holding.HORSESHOE) {
-                    if (pState.getValue(MATERIAL) == Material.IRON) {
-                        pPlayer.addItem(new ItemStack(ModItems.IRON_HORSESHOE.get()));
-                    } else if (pState.getValue(MATERIAL) == Material.GOLD) {
-                        pPlayer.addItem(new ItemStack(ModItems.GOLDEN_HORSESHOE.get()));
-                    } else if (pState.getValue(MATERIAL) == Material.DIAMOND) {
-                        pPlayer.addItem(new ItemStack(ModItems.DIAMOND_HORSESHOE.get()));
-                    }
+                // Update block state
                 pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.NONE).setValue(HOLDING, Holding.NONE), 3);
             }
         }
