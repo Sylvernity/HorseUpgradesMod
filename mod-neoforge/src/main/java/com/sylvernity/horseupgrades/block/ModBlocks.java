@@ -22,7 +22,7 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(HorseUpgrades.MOD_ID);
 
     public static final DeferredBlock<Block> HORSESHOE_ANVIL = registerBlock("horseshoe_anvil", (properties) -> new
-            HorseshoeAnvilBlock(properties.strength(6f).requiresCorrectToolForDrops()));
+            HorseshoeAnvilBlock(properties.strength(6f).destroyTime(3f).requiresCorrectToolForDrops()));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function) {
         DeferredBlock<T> toReturn = BLOCKS.registerBlock(name, function);

@@ -9,6 +9,8 @@ import com.sylvernity.horseupgrades.HorseUpgrades;
 import com.sylvernity.horseupgrades.block.entity.HorseshoeAnvilBlockEntity;
 import com.sylvernity.horseupgrades.blockstate.Material;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
@@ -38,6 +40,15 @@ public class HammerItem extends TieredItem {
     @Override
     public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
         return !(player.level().getBlockEntity(pos) instanceof HorseshoeAnvilBlockEntity);
+    }
+
+    // Mimic Sword hammer durability loss when breaking other blocks
+    @Override
+    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miningEntity) {
+        if (!level.isClientSide && state.getDestroySpeed(level, pos) != 0.0F) {
+            stack.hurtAndBreak(2, miningEntity, EquipmentSlot.MAINHAND);
+        }
+        return true;
     }
 
     public int getMaterialValue() {

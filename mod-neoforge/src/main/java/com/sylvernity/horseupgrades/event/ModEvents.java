@@ -9,6 +9,7 @@ import com.sylvernity.horseupgrades.HorseUpgrades;
 import com.sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock;
 import com.sylvernity.horseupgrades.block.entity.HorseshoeAnvilBlockEntity;
 import com.sylvernity.horseupgrades.blockstate.Holding;
+import com.sylvernity.horseupgrades.item.ModItems;
 import com.sylvernity.horseupgrades.item.custom.HammerItem;
 import com.sylvernity.horseupgrades.item.custom.HorseshoeItem;
 import net.minecraft.core.BlockPos;
@@ -138,10 +139,9 @@ public class ModEvents {
                 clickedInitial = false;
                 tickCounter = 0;
 
-                // Change blockstate and play anvil sound
+                // Change block inventory and play anvil sound
                 HorseshoeAnvilBlockEntity anvilBlock = (HorseshoeAnvilBlockEntity) event.getEntity().level().getBlockEntity(blockPos);
-                Material prevMaterial = anvilBlock.getBlockState().getValue(HorseshoeAnvilBlock.MATERIAL);
-                level.setBlock(blockPos, level.getBlockState(blockPos).setValue(HorseshoeAnvilBlock.HOLDING, Holding.HORSESHOE).setValue(HorseshoeAnvilBlock.MATERIAL, prevMaterial), 3);
+                anvilBlock.upgradeBar();
                 level.playSound((Player)null, blockPos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
 
                 // Fire blockstate change event
@@ -155,16 +155,6 @@ public class ModEvents {
         else {
             clickedInitial = false;
             tickCounter = 0;
-        }
-    }
-
-    // Run this when a block is broken
-    @SubscribeEvent
-    public static void onBlockBrokenWithHammer(BlockEvent.BreakEvent event) {
-        ItemStack itemStackUsed = event.getPlayer().getItemInHand(event.getPlayer().getUsedItemHand());
-        if (itemStackUsed.getItem() instanceof HammerItem) {
-            // Remove 1 Durability from the Hammer when it is used to break a block
-            itemStackUsed.hurtAndBreak(1, event.getPlayer(), event.getPlayer().getEquipmentSlotForItem(itemStackUsed));
         }
     }
 

@@ -125,18 +125,9 @@ public class HorseshoeAnvilBlock extends Block implements EntityBlock {
 
             pBar.split(1);
 
-            if (pItem.equals(ModItems.IRON_HORSESHOE_BAR.get())) {
-                pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.IRON).setValue(HOLDING, Holding.BAR), 3);
-            }
-            else if(pItem.equals(ModItems.GOLDEN_HORSESHOE_BAR.get())) {
-                pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.GOLD).setValue(HOLDING, Holding.BAR), 3);
-            }
-            else if (pItem.equals(ModItems.DIAMOND_HORSESHOE_BAR.get())) {
-                pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.DIAMOND).setValue(HOLDING, Holding.BAR), 3);
-            }
-
             // Update inventory of Anvil
             horseshoeAnvilBlockEntity.setContent(new ItemStack(pItem));
+
             pLevel.playSound((Player)null, pPos, SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
             pLevel.gameEvent(pPlayer, GameEvent.BLOCK_CHANGE, pPos);
         }
@@ -152,9 +143,6 @@ public class HorseshoeAnvilBlock extends Block implements EntityBlock {
                 // Update inventory of Anvil
                 HorseshoeAnvilBlockEntity anvilBlockEntity = (HorseshoeAnvilBlockEntity) pLevel.getBlockEntity(pPos);
                 pPlayer.addItem(anvilBlockEntity.retrieveContent());
-
-                // Update block state
-                pLevel.setBlock(pPos, pState.setValue(MATERIAL, Material.NONE).setValue(HOLDING, Holding.NONE), 3);
             }
         }
         return super.useItemOn(itemStack, pState, pLevel, pPos, pPlayer, pHand, pHit);
@@ -164,5 +152,15 @@ public class HorseshoeAnvilBlock extends Block implements EntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new HorseshoeAnvilBlockEntity(pPos, pState);
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            if (level.getBlockEntity(pos) instanceof HorseshoeAnvilBlockEntity anvilBlockEntity) {
+                anvilBlockEntity.dropContents();
+            }
+        }
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 }

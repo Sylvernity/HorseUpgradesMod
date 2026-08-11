@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -20,9 +21,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import static com.sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock.HOLDING;
 import static com.sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock.MATERIAL;
 
-public class HorseshoeAnvilBlockEntity extends BlockEntity implements MenuProvider {
+public class HorseshoeAnvilBlockEntity extends BlockEntity {
 
     private final ItemStackHandler inventory = new ItemStackHandler(1){
         @Override
@@ -77,17 +78,6 @@ public class HorseshoeAnvilBlockEntity extends BlockEntity implements MenuProvid
                 return 0;
             }
         };
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return Component.literal("HorseshoeAnvil");
-    }
-
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return null;
     }
 
     @Override
@@ -168,5 +158,36 @@ public class HorseshoeAnvilBlockEntity extends BlockEntity implements MenuProvid
 
     public void setContent(ItemStack pStack) {
         this.inventory.setStackInSlot(0, pStack);
+    }
+
+    public void upgradeBar() {
+        ItemStack stack = this.inventory.getStackInSlot(0);
+        Item horseshoe = null;
+
+        if (stack.is(ModItems.IRON_HORSESHOE_BAR.get())) {
+            horseshoe = ModItems.IRON_HORSESHOE.get();
+        }
+
+        if (stack.is(ModItems.GOLDEN_HORSESHOE_BAR.get())) {
+            horseshoe = ModItems.GOLDEN_HORSESHOE.get();
+        }
+
+        if (stack.is(ModItems.DIAMOND_HORSESHOE_BAR.get())) {
+            horseshoe = ModItems.DIAMOND_HORSESHOE.get();
+        }
+
+        this.inventory.setStackInSlot(0, new ItemStack(horseshoe));
+    }
+
+    public void dropContents() {
+        if (level == null || level.isClientSide) {
+            return;
+        }
+
+        ItemStack stack = inventory.getStackInSlot(0);
+
+        if (!stack.isEmpty()) {
+            Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack.copy());
+        }
     }
 }
