@@ -36,7 +36,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.sylvernity.horseupgrades.blockstate.Holding;
 import com.sylvernity.horseupgrades.blockstate.Material;
-import com.sylvernity.horseupgrades.item.ModItems;
 
 public class HorseshoeAnvilBlock extends Block implements EntityBlock {
 
@@ -46,28 +45,54 @@ public class HorseshoeAnvilBlock extends Block implements EntityBlock {
     protected static final VoxelShape SHAPE_UPPER_BASE = Block.box(3, 0, 3, 13, 3, 13);
     protected static final VoxelShape SHAPE_MAIN_HEAD = Block.box(4, 10, 4, 12, 13, 12);
     protected static final VoxelShape SHAPE_MAIN_HEAD_TOP = Block.box(5, 13, 5, 11, 14, 11);
-    protected static final VoxelShape X_SHAPE_LOWER_BASE = Block.box(1, 0, 2, 15, 1, 14);
-    public static final VoxelShape X_SHAPE_BASE = Shapes.or(X_SHAPE_LOWER_BASE, SHAPE_UPPER_BASE);
-    public static final VoxelShape X_SHAPE_BOTTOM = Shapes.or(X_SHAPE_BASE, SHAPE_BODY);
-    protected static final VoxelShape X_SHAPE_SMALL_HEAD_TOP = Block.box(11, 13, 7, 13, 14, 9);
-    protected static final VoxelShape X_SHAPE_HEAD_EAST_FIRST = Block.box(12, 10, 5, 14, 13, 11);
-    protected static final VoxelShape X_SHAPE_HEAD_EAST_SECOND = Block.box(14, 11, 6, 16, 13, 10);
-    protected static final VoxelShape X_SHAPE_HEAD_EAST_THIRD = Block.box(16, 12, 7, 17, 13, 9);
-    protected static final VoxelShape X_SHAPE_HEAD_WEST = Block.box(2, 11, 5, 4, 13, 11);
-    public static final VoxelShape X_SHAPE_HEAD = Shapes.or(X_SHAPE_SMALL_HEAD_TOP, SHAPE_MAIN_HEAD, SHAPE_MAIN_HEAD_TOP, X_SHAPE_HEAD_EAST_FIRST, X_SHAPE_HEAD_EAST_SECOND, X_SHAPE_HEAD_EAST_THIRD, X_SHAPE_HEAD_WEST);
-    public static final VoxelShape X_SHAPE = Shapes.or(X_SHAPE_BOTTOM, X_SHAPE_HEAD);
 
+    // ===== WEST (original "W_SHAPE") =====
+    protected static final VoxelShape W_SHAPE_LOWER_BASE = Block.box(1, 0, 2, 15, 1, 14);
+    public static final VoxelShape W_SHAPE_BASE = Shapes.or(W_SHAPE_LOWER_BASE, SHAPE_UPPER_BASE);
+    public static final VoxelShape W_SHAPE_BOTTOM = Shapes.or(W_SHAPE_BASE, SHAPE_BODY);
+    protected static final VoxelShape W_SHAPE_SMALL_HEAD_TOP = Block.box(11, 13, 7, 13, 14, 9);
+    protected static final VoxelShape W_SHAPE_HEAD_EAST_FIRST = Block.box(12, 10, 5, 14, 13, 11);
+    protected static final VoxelShape W_SHAPE_HEAD_EAST_SECOND = Block.box(14, 11, 6, 16, 13, 10);
+    protected static final VoxelShape W_SHAPE_HEAD_EAST_THIRD = Block.box(16, 12, 7, 17, 13, 9);
+    protected static final VoxelShape W_SHAPE_HEAD_WEST = Block.box(2, 11, 5, 4, 13, 11);
+    public static final VoxelShape W_SHAPE_HEAD = Shapes.or(W_SHAPE_SMALL_HEAD_TOP, SHAPE_MAIN_HEAD, SHAPE_MAIN_HEAD_TOP, W_SHAPE_HEAD_EAST_FIRST, W_SHAPE_HEAD_EAST_SECOND, W_SHAPE_HEAD_EAST_THIRD, W_SHAPE_HEAD_WEST);
+    public static final VoxelShape W_SHAPE = Shapes.or(W_SHAPE_BOTTOM, W_SHAPE_HEAD);
 
-    protected static final VoxelShape Z_SHAPE_LOWER_BASE = Block.box(2, 0, 1, 14, 1, 15);
-    public static final VoxelShape Z_SHAPE_BASE = Shapes.or(Z_SHAPE_LOWER_BASE, SHAPE_UPPER_BASE);
-    public static final VoxelShape Z_SHAPE_BOTTOM = Shapes.or(Z_SHAPE_BASE, SHAPE_BODY);
-    protected static final VoxelShape Z_SHAPE_SMALL_HEAD_TOP = Block.box(7, 13, 11, 9, 14, 13);
-    protected static final VoxelShape Z_SHAPE_HEAD_EAST_FIRST = Block.box(5, 10, 12, 11, 13, 14);
-    protected static final VoxelShape Z_SHAPE_HEAD_EAST_SECOND = Block.box(6, 11, 14, 10, 13, 16);
-    protected static final VoxelShape Z_SHAPE_HEAD_EAST_THIRD = Block.box(7, 12, 16, 9, 13, 17);
-    protected static final VoxelShape Z_SHAPE_HEAD_WEST = Block.box(5, 11, 2, 11, 13, 4);
-    public static final VoxelShape Z_SHAPE_HEAD = Shapes.or(Z_SHAPE_SMALL_HEAD_TOP, SHAPE_MAIN_HEAD, SHAPE_MAIN_HEAD_TOP, Z_SHAPE_HEAD_EAST_FIRST, Z_SHAPE_HEAD_EAST_SECOND, Z_SHAPE_HEAD_EAST_THIRD, Z_SHAPE_HEAD_WEST);
-    public static final VoxelShape Z_SHAPE = Shapes.or(Z_SHAPE_BOTTOM, Z_SHAPE_HEAD);
+    // ===== NORTH (original "N_SHAPE") =====
+    protected static final VoxelShape N_SHAPE_LOWER_BASE = Block.box(2, 0, 1, 14, 1, 15);
+    public static final VoxelShape N_SHAPE_BASE = Shapes.or(N_SHAPE_LOWER_BASE, SHAPE_UPPER_BASE);
+    public static final VoxelShape N_SHAPE_BOTTOM = Shapes.or(N_SHAPE_BASE, SHAPE_BODY);
+    protected static final VoxelShape N_SHAPE_SMALL_HEAD_TOP = Block.box(7, 13, 11, 9, 14, 13);
+    protected static final VoxelShape N_SHAPE_HEAD_EAST_FIRST = Block.box(5, 10, 12, 11, 13, 14);
+    protected static final VoxelShape N_SHAPE_HEAD_EAST_SECOND = Block.box(6, 11, 14, 10, 13, 16);
+    protected static final VoxelShape N_SHAPE_HEAD_EAST_THIRD = Block.box(7, 12, 16, 9, 13, 17);
+    protected static final VoxelShape N_SHAPE_HEAD_WEST = Block.box(5, 11, 2, 11, 13, 4);
+    public static final VoxelShape N_SHAPE_HEAD = Shapes.or(N_SHAPE_SMALL_HEAD_TOP, SHAPE_MAIN_HEAD, SHAPE_MAIN_HEAD_TOP, N_SHAPE_HEAD_EAST_FIRST, N_SHAPE_HEAD_EAST_SECOND, N_SHAPE_HEAD_EAST_THIRD, N_SHAPE_HEAD_WEST);
+    public static final VoxelShape N_SHAPE = Shapes.or(N_SHAPE_BOTTOM, N_SHAPE_HEAD);
+
+    // ===== EAST (W_SHAPE rotated 180°: x,z -> 16-x, 16-z) =====
+    protected static final VoxelShape E_SHAPE_LOWER_BASE = W_SHAPE_LOWER_BASE; // symmetric, unchanged
+    public static final VoxelShape E_SHAPE_BASE = Shapes.or(E_SHAPE_LOWER_BASE, SHAPE_UPPER_BASE);
+    public static final VoxelShape E_SHAPE_BOTTOM = Shapes.or(E_SHAPE_BASE, SHAPE_BODY);
+    protected static final VoxelShape E_SHAPE_SMALL_HEAD_TOP = Block.box(3, 13, 7, 5, 14, 9);
+    protected static final VoxelShape E_SHAPE_HEAD_WEST_FIRST = Block.box(2, 10, 5, 4, 13, 11);
+    protected static final VoxelShape E_SHAPE_HEAD_WEST_SECOND = Block.box(0, 11, 6, 2, 13, 10);
+    protected static final VoxelShape E_SHAPE_HEAD_WEST_THIRD = Block.box(-1, 12, 7, 0, 13, 9);
+    protected static final VoxelShape E_SHAPE_HEAD_EAST = Block.box(12, 11, 5, 14, 13, 11);
+    public static final VoxelShape E_SHAPE_HEAD = Shapes.or(E_SHAPE_SMALL_HEAD_TOP, SHAPE_MAIN_HEAD, SHAPE_MAIN_HEAD_TOP, E_SHAPE_HEAD_WEST_FIRST, E_SHAPE_HEAD_WEST_SECOND, E_SHAPE_HEAD_WEST_THIRD, E_SHAPE_HEAD_EAST);
+    public static final VoxelShape E_SHAPE = Shapes.or(E_SHAPE_BOTTOM, E_SHAPE_HEAD);
+
+    // ===== SOUTH (N_SHAPE rotated 180°: x,z -> 16-x, 16-z) =====
+    protected static final VoxelShape S_SHAPE_LOWER_BASE = N_SHAPE_LOWER_BASE; // symmetric, unchanged
+    public static final VoxelShape S_SHAPE_BASE = Shapes.or(S_SHAPE_LOWER_BASE, SHAPE_UPPER_BASE);
+    public static final VoxelShape S_SHAPE_BOTTOM = Shapes.or(S_SHAPE_BASE, SHAPE_BODY);
+    protected static final VoxelShape S_SHAPE_SMALL_HEAD_TOP = Block.box(7, 13, 3, 9, 14, 5);
+    protected static final VoxelShape S_SHAPE_HEAD_NORTH_FIRST = Block.box(5, 10, 2, 11, 13, 4);
+    protected static final VoxelShape S_SHAPE_HEAD_NORTH_SECOND = Block.box(6, 11, 0, 10, 13, 2);
+    protected static final VoxelShape S_SHAPE_HEAD_NORTH_THIRD = Block.box(7, 12, -1, 9, 13, 0);
+    protected static final VoxelShape S_SHAPE_HEAD_SOUTH = Block.box(5, 11, 12, 11, 13, 14);
+    public static final VoxelShape S_SHAPE_HEAD = Shapes.or(S_SHAPE_SMALL_HEAD_TOP, SHAPE_MAIN_HEAD, SHAPE_MAIN_HEAD_TOP, S_SHAPE_HEAD_NORTH_FIRST, S_SHAPE_HEAD_NORTH_SECOND, S_SHAPE_HEAD_NORTH_THIRD, S_SHAPE_HEAD_SOUTH);
+    public static final VoxelShape S_SHAPE = Shapes.or(S_SHAPE_BOTTOM, S_SHAPE_HEAD);
     public static final EnumProperty<Holding> HOLDING = EnumProperty.create("holding", Holding.class);
     public static final EnumProperty<Material> MATERIAL = EnumProperty.create("material", Material.class);
 
@@ -83,7 +108,14 @@ public class HorseshoeAnvilBlock extends Block implements EntityBlock {
     }
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         Direction direction = pState.getValue(FACING);
-        return direction.getAxis() == Direction.Axis.X ? X_SHAPE : Z_SHAPE;
+        return switch (direction) {
+            case WEST -> W_SHAPE;
+            case NORTH -> N_SHAPE;
+            case EAST -> E_SHAPE;
+            case DOWN -> null;
+            case UP -> null;
+            case SOUTH -> S_SHAPE;
+        };
     }
 
     public BlockState rotate(BlockState pState, Rotation pRot) {
