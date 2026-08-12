@@ -31,10 +31,18 @@ Hammer (Can be iron, gold, or diamond):
 
 *Note: Netherite hammers/horseshoes can be created in the smithing table by combining a netherite ingot and a diamond hammer/horseshoe. Netherite horseshoe bars cannot be crafted.*
 ### 2. Place the Horseshoe Bar on the anvil and hammer until a Horseshoe is formed.
+![Horseshoe hammering demonstration.](https://github.com/Sylvernity/HorseUpgradesMod/blob/master/HammeringHorseshoe.gif)
 
 ### 3. Equip the Horseshoe to your horse's armor slot and enjoy!
 ![Netherite Horseshoe equipped in a horse's armor slot.](https://cdn.modrinth.com/data/cached_images/4f80788b5d42ab0737a450590ab6f532833edc01.png)
 
+Horse without horseshoes:
+
+![Horse being ridden without horseshoes equipped](https://github.com/Sylvernity/HorseUpgradesMod/blob/master/HorseWithoutHorseshoe.gif)
+
+Horse with Netherite horseshoes:
+
+![Horse being ridden with Netherite horseshoes equipped](https://github.com/Sylvernity/HorseUpgradesMod/blob/master/HorseWithHorseshoe.gif)
 
 # Dependencies
 - Minecraft NeoForge
