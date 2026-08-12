@@ -9,7 +9,6 @@ import com.sylvernity.horseupgrades.HorseUpgrades;
 import com.sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock;
 import com.sylvernity.horseupgrades.block.entity.HorseshoeAnvilBlockEntity;
 import com.sylvernity.horseupgrades.blockstate.Holding;
-import com.sylvernity.horseupgrades.item.ModItems;
 import com.sylvernity.horseupgrades.item.custom.HammerItem;
 import com.sylvernity.horseupgrades.item.custom.HorseshoeItem;
 import net.minecraft.core.BlockPos;
@@ -18,7 +17,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -34,7 +32,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import com.sylvernity.horseupgrades.blockstate.Material;
 
 import java.util.Objects;
@@ -50,7 +47,7 @@ public class ModEvents {
     // Run this when equipment has been changed for an entity. Adds speed modifier when horseshoe added
     @SubscribeEvent
     public static void addHorseshoeBonusSpeed(LivingEquipmentChangeEvent event){
-        if(!event.getEntity().level().isClientSide()) {
+        if(!event.getEntity().level().isClientSide) {
             // If the entity is a horse
             if (event.getEntity() instanceof Horse entity) {
                 // If the equipment in the horse's chest/armor slot was changed
@@ -120,41 +117,42 @@ public class ModEvents {
     public static void onTickHammer(PlayerTickEvent.Post event) {
         ItemStack itemStackUsed = event.getEntity().getItemInHand(event.getEntity().getUsedItemHand());
         Item itemInUse = itemStackUsed.getItem();
+        if (!event.getEntity().level().isClientSide) {
+            // If the player is swinging a Hammer
+            if (event.getEntity().swinging && itemInUse instanceof HammerItem) {
+                Level level = event.getEntity().level();
+                int ticksNeeded = 2250;
 
-        // If the player is swinging a Hammer
-        if (event.getEntity().swinging && itemInUse instanceof HammerItem){
-            Level level = event.getEntity().level();
-            int ticksNeeded = 2250;
+                // Determine the amount of hammering required based on hammer tier
+                ticksNeeded /= (int) ((HammerItem) itemInUse).getTier().getSpeed();
 
-            // Determine the amount of hammering required based on hammer tier
-            ticksNeeded /= (int) ((HammerItem) itemInUse).getTier().getSpeed();
+                // If the initial click was on a horseshoe anvil and it hasn't been long enough of constant swinging, increment by 1
+                if (clickedInitial && tickCounter < ticksNeeded) {
+                    tickCounter++;
+                }
 
-            // If the initial click was on a horseshoe anvil and it hasn't been long enough of constant swinging, increment by 1
-            if (clickedInitial && tickCounter < ticksNeeded){
-                tickCounter ++;
+                // If the hammer has been swinging at the anvil long enough, change the blockstate of the anvil to a horseshoe
+                else if (tickCounter == ticksNeeded) {
+                    clickedInitial = false;
+                    tickCounter = 0;
+
+                    // Change block inventory and play anvil sound
+                    HorseshoeAnvilBlockEntity anvilBlock = (HorseshoeAnvilBlockEntity) event.getEntity().level().getBlockEntity(blockPos);
+                    anvilBlock.upgradeBar();
+                    level.playSound((Player) null, blockPos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+                    // Fire blockstate change event
+                    level.gameEvent(event.getEntity(), GameEvent.BLOCK_CHANGE, blockPos);
+
+                    // Remove 1 durability from the tool used
+                    itemStackUsed.hurtAndBreak(1, event.getEntity(), event.getEntity().getEquipmentSlotForItem(itemStackUsed));
+                }
             }
-
-            // If the hammer has been swinging at the anvil long enough, change the blockstate of the anvil to a horseshoe
-            else if (tickCounter == ticksNeeded) {
+            // Reset variables if hammer is no longer being swung
+            else {
                 clickedInitial = false;
                 tickCounter = 0;
-
-                // Change block inventory and play anvil sound
-                HorseshoeAnvilBlockEntity anvilBlock = (HorseshoeAnvilBlockEntity) event.getEntity().level().getBlockEntity(blockPos);
-                anvilBlock.upgradeBar();
-                level.playSound((Player)null, blockPos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
-
-                // Fire blockstate change event
-                level.gameEvent(event.getEntity(), GameEvent.BLOCK_CHANGE, blockPos);
-
-                // Remove 1 durability from the tool used
-                itemStackUsed.hurtAndBreak(1, event.getEntity(), event.getEntity().getEquipmentSlotForItem(itemStackUsed));
             }
-        }
-        // Reset variables if hammer is no longer being swung
-        else {
-            clickedInitial = false;
-            tickCounter = 0;
         }
     }
 
@@ -163,8 +161,7 @@ public class ModEvents {
     public static void onHorseStepWithHorseshoe(PlayerTickEvent.Post event) {
         LivingEntity entity = event.getEntity();
         // If entity is horse and has passenger
-        if (!entity.level().isClientSide() && entity instanceof Horse && ((Horse) entity).hasExactlyOnePlayerPassenger() && ((Horse) entity).getBodyArmorItem().getItem() instanceof HorseshoeItem) {
-            Horse horse = (Horse) entity;
+        if (!entity.level().isClientSide() && entity instanceof Horse horse && ((Horse) entity).hasExactlyOnePlayerPassenger() && ((Horse) entity).getBodyArmorItem().getItem() instanceof HorseshoeItem) {
 
             double xMotion = horse.getControllingPassenger().getDeltaMovement().get(Direction.Axis.X);
             double zMotion = horse.getControllingPassenger().getDeltaMovement().get(Direction.Axis.Z);

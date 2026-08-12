@@ -5,30 +5,22 @@
 
 package com.sylvernity.horseupgrades.block.entity;
 
-import com.sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock;
+import com.sylvernity.horseupgrades.HorseUpgrades;
 import com.sylvernity.horseupgrades.blockstate.Holding;
 import com.sylvernity.horseupgrades.blockstate.Material;
 import com.sylvernity.horseupgrades.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import static com.sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock.HOLDING;
 import static com.sylvernity.horseupgrades.block.custom.HorseshoeAnvilBlock.MATERIAL;
 
@@ -43,7 +35,7 @@ public class HorseshoeAnvilBlockEntity extends BlockEntity {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if(!level.isClientSide()) {
+            if(!level.isClientSide) {
                 updateVisualBlockState();
             }
         }
@@ -67,7 +59,7 @@ public class HorseshoeAnvilBlockEntity extends BlockEntity {
 
             @Override
             public void set(int pIndex, int pValue) {
-                switch (pIndex) {
+                switch (pIndex) { // pIndex is never another value
                     case 0 -> HorseshoeAnvilBlockEntity.this.progress = pValue;
                     case 1 -> HorseshoeAnvilBlockEntity.this.maxProgress = pValue;
                 }
@@ -151,32 +143,42 @@ public class HorseshoeAnvilBlockEntity extends BlockEntity {
     }
 
     public ItemStack retrieveContent() {
-        ItemStack currentContent = this.inventory.getStackInSlot(0);
-        this.inventory.setStackInSlot(0, ItemStack.EMPTY);
-        return currentContent;
+        return this.inventory.extractItem(0, 1, false);
+    }
+
+    public ItemStack getContent() {
+        return this.inventory.getStackInSlot(0).copy();
     }
 
     public void setContent(ItemStack pStack) {
-        this.inventory.setStackInSlot(0, pStack);
+        this.inventory.insertItem(0, pStack, false);
     }
 
     public void upgradeBar() {
-        ItemStack stack = this.inventory.getStackInSlot(0);
+        ItemStack stack = this.getContent();
         Item horseshoe = null;
 
-        if (stack.is(ModItems.IRON_HORSESHOE_BAR.get())) {
+        if (stack.is(ModItems.IRON_HORSESHOE_BAR.asItem())) {
             horseshoe = ModItems.IRON_HORSESHOE.get();
         }
 
-        if (stack.is(ModItems.GOLDEN_HORSESHOE_BAR.get())) {
+        if (stack.is(ModItems.GOLDEN_HORSESHOE_BAR.asItem())) {
             horseshoe = ModItems.GOLDEN_HORSESHOE.get();
         }
 
-        if (stack.is(ModItems.DIAMOND_HORSESHOE_BAR.get())) {
+        if (stack.is(ModItems.DIAMOND_HORSESHOE_BAR.asItem())) {
             horseshoe = ModItems.DIAMOND_HORSESHOE.get();
         }
 
-        this.inventory.setStackInSlot(0, new ItemStack(horseshoe));
+
+        try {
+            assert horseshoe != null;
+            this.retrieveContent();
+            this.setContent(new ItemStack(horseshoe));
+        }
+        catch (Exception e) {
+            HorseUpgrades.LOGGER.error("ERROR IN upgradeBar: {}", e.toString());
+        }
     }
 
     public void dropContents() {
@@ -189,5 +191,9 @@ public class HorseshoeAnvilBlockEntity extends BlockEntity {
         if (!stack.isEmpty()) {
             Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack.copy());
         }
+    }
+
+    public boolean isEmpty() {
+        return inventory.getStackInSlot(0).isEmpty();
     }
 }

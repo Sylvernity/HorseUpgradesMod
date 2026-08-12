@@ -5,6 +5,7 @@
 
 package com.sylvernity.horseupgrades.block.custom;
 
+import com.sylvernity.horseupgrades.HorseUpgrades;
 import com.sylvernity.horseupgrades.block.ModBlocks;
 import com.sylvernity.horseupgrades.block.entity.HorseshoeAnvilBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -98,30 +99,34 @@ public class HorseshoeAnvilBlock extends Block implements EntityBlock {
 
     public HorseshoeAnvilBlock(BlockBehaviour.Properties pProperties) {
         super(pProperties);
-        if(!ModBlocks.HORSESHOE_ANVIL.getKey().equals(BuiltInRegistries.BLOCK.getKey(this))) {
+        if(!BuiltInRegistries.BLOCK.getKey(this).equals(ModBlocks.HORSESHOE_ANVIL.getKey())) {
             this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HOLDING, Holding.NONE).setValue(MATERIAL, Material.NONE));
         }
     }
 
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getClockWise());
     }
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+
+    @Override
+    public @NotNull VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         Direction direction = pState.getValue(FACING);
         return switch (direction) {
             case WEST -> W_SHAPE;
             case NORTH -> N_SHAPE;
             case EAST -> E_SHAPE;
-            case DOWN -> null;
-            case UP -> null;
             case SOUTH -> S_SHAPE;
+            default -> N_SHAPE;
         };
     }
 
+    @Override
     public BlockState rotate(BlockState pState, Rotation pRot) {
         return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING)));
     }
 
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
         builder.add(HOLDING);
@@ -132,38 +137,30 @@ public class HorseshoeAnvilBlock extends Block implements EntityBlock {
     /* BLOCK ENTITY */
 
     @Override
-    public @NotNull RenderShape getRenderShape(BlockState pState) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState pState) {
         return RenderShape.MODEL;
     }
 
     // Called by useOn method in HorseshoeBarItem. Calls placeBar method if anvil has no item
-    public static boolean tryPlaceBar(@Nullable Player pPlayer, Level pLevel, BlockPos pPos, BlockState pState, ItemStack pBar) {
-        if (!pLevel.isClientSide) {
-            if (pState.getValue(HOLDING) == Holding.NONE) {
-                placeBar(pPlayer, pLevel, pPos, pState, pBar);
+    public static boolean tryPlaceBar(@Nullable Player pPlayer, Level pLevel, BlockPos pPos, ItemStack pBar) {
+        if (!pLevel.isClientSide()) {
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+
+            if (blockEntity instanceof HorseshoeAnvilBlockEntity horseshoeAnvilBlockEntity) {
+                Item pItem = pBar.getItem();
+
+                pBar.split(1);
+
+                // Update inventory of Anvil
+                horseshoeAnvilBlockEntity.setContent(new ItemStack(pItem));
+
+                pLevel.playSound(null, pPos, SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                pLevel.gameEvent(pPlayer, GameEvent.BLOCK_CHANGE, pPos);
             }
             return true;
         } else {
             return false;
         }
-    }
-
-    // Place Horseshoe Bar in anvil when called by tryPlaceBar()
-    private static void placeBar(@Nullable Player pPlayer, Level pLevel, BlockPos pPos, BlockState pState, ItemStack pBar) {
-        BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-
-        if (blockEntity instanceof HorseshoeAnvilBlockEntity horseshoeAnvilBlockEntity) {
-            Item pItem = pBar.getItem();
-
-            pBar.split(1);
-
-            // Update inventory of Anvil
-            horseshoeAnvilBlockEntity.setContent(new ItemStack(pItem));
-
-            pLevel.playSound((Player)null, pPos, SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-            pLevel.gameEvent(pPlayer, GameEvent.BLOCK_CHANGE, pPos);
-        }
-
     }
 
     // Returns item if player clicks filled anvil
@@ -174,10 +171,26 @@ public class HorseshoeAnvilBlock extends Block implements EntityBlock {
             if (pState.getValue(HOLDING) != Holding.NONE) {
                 // Update inventory of Anvil
                 HorseshoeAnvilBlockEntity anvilBlockEntity = (HorseshoeAnvilBlockEntity) pLevel.getBlockEntity(pPos);
+                ItemStack anvilItemStack = anvilBlockEntity.getContent();
+
+                // #copy() allows the anvilItemStack to still be checked later
                 pPlayer.addItem(anvilBlockEntity.retrieveContent());
+
+
+                // Finish interaction if player was holding same stack
+                if (ItemStack.isSameItem(itemStack, anvilItemStack)) {
+                    return ItemInteractionResult.sidedSuccess(false);
+                }
             }
         }
         return super.useItemOn(itemStack, pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    @Override
+    protected void attack(BlockState state, Level level, BlockPos pos, Player player) {
+        if (!level.isClientSide)
+            HorseUpgrades.LOGGER.info("{}", ((HorseshoeAnvilBlockEntity) level.getBlockEntity(pos)).getContent());
+        super.attack(state, level, pos, player);
     }
 
     @Nullable

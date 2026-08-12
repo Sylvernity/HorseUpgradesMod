@@ -33,13 +33,14 @@ public class HorseshoeBarItem extends Item {
     public InteractionResult useOn(UseOnContext pContext) {
         Level level = pContext.getLevel();
 
-        BlockPos blockpos = pContext.getClickedPos();
-        BlockState blockstate = level.getBlockState(blockpos);
-        if (blockstate.getBlock() instanceof HorseshoeAnvilBlock) {
-            return HorseshoeAnvilBlock.tryPlaceBar(pContext.getPlayer(), level, blockpos, blockstate, pContext.getItemInHand()) ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.PASS;
-        } else {
-            return InteractionResult.PASS;
+        if (!level.isClientSide) {
+            BlockPos blockpos = pContext.getClickedPos();
+            BlockState blockstate = level.getBlockState(blockpos);
+            if (blockstate.getBlock() instanceof HorseshoeAnvilBlock) {
+                return HorseshoeAnvilBlock.tryPlaceBar(pContext.getPlayer(), level, blockpos, pContext.getItemInHand()) ? InteractionResult.sidedSuccess(false) : InteractionResult.PASS;
+            }
         }
+        return InteractionResult.PASS;
     }
 
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
