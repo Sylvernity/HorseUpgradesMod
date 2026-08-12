@@ -7,13 +7,13 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:gold_ingot"
+      "item": "minecraft:diamond"
     },
     "@": {
       "item": "minecraft:stick"
     }
   },
   "result": {
-    "item": "horseupgrades:golden_hammer"
+    "id": "horseupgrades:diamond_hammer"
   }
 }

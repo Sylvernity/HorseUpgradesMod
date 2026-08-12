@@ -5,10 +5,10 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:gold_ingot"
+      "item": "minecraft:diamond"
     }
   },
   "result": {
-    "item": "horseupgrades:golden_horseshoe_bar"
+    "id": "horseupgrades:diamond_horseshoe_bar"
   }
 }

@@ -1,8 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "###",
-    "## ",
     "###"
   ],
   "key": {
@@ -11,6 +9,6 @@
     }
   },
   "result": {
-    "item": "horseupgrades:horseshoe_anvil"
+    "id": "horseupgrades:iron_horseshoe_bar"
   }
 }

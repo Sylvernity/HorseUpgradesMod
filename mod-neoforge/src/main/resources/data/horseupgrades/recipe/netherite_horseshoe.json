@@ -7,6 +7,6 @@
     "item": "horseupgrades:diamond_horseshoe"
   },
   "result": {
-    "item": "horseupgrades:netherite_horseshoe"
+    "id": "horseupgrades:netherite_horseshoe"
   }
 }

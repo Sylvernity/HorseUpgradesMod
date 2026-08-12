@@ -7,6 +7,6 @@
     "item": "horseupgrades:diamond_hammer"
   },
   "result": {
-    "item": "horseupgrades:netherite_hammer"
+    "id": "horseupgrades:netherite_hammer"
   }
 }
