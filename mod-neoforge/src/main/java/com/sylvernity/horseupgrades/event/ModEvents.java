@@ -51,7 +51,7 @@ public class ModEvents {
             // If the entity is a horse
             if (event.getEntity() instanceof Horse entity) {
                 // If the equipment in the horse's chest/armor slot was changed
-                if (event.getSlot() == EquipmentSlot.CHEST) {
+                if (event.getSlot() == EquipmentSlot.BODY) {
                     int bonus = 0;
 
                     // When old item in slot is horseshoe, remove old speed bonus
@@ -73,6 +73,7 @@ public class ModEvents {
                         *   bonus = 3375 - speed;
                         * }
                         * */
+
                         ResourceLocation attributeLocation = ResourceLocation.fromNamespaceAndPath("horseupgrades", "speed_boost");
                         attributeModifier = new AttributeModifier(attributeLocation, intToFloat(bonus), AttributeModifier.Operation.ADD_VALUE);
                         Objects.requireNonNull(entity.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(attributeModifier);
@@ -121,7 +122,7 @@ public class ModEvents {
             // If the player is swinging a Hammer
             if (event.getEntity().swinging && itemInUse instanceof HammerItem) {
                 Level level = event.getEntity().level();
-                int ticksNeeded = 2250;
+                int ticksNeeded = 1000;
 
                 // Determine the amount of hammering required based on hammer tier
                 ticksNeeded /= (int) ((HammerItem) itemInUse).getTier().getSpeed();
